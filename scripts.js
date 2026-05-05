@@ -19,7 +19,7 @@ const popup = new mapboxgl.Popup({
 let centerData = null;
 
 // 1. Fetch the center data GeoJSON to be used for filtering in the sidebar
-fetch('./Joined_Center_Building.geojson')
+fetch('./CFC_ACTIVE_points.geojson')
     .then(response => response.json())
     .then(data => {
         centerData = data;
@@ -82,50 +82,7 @@ map.on('load', () => {
         }
     });
 
-    // Add source for center polygons (building footprints)
-    map.addSource('centers-polygons', {
-        type: 'geojson',
-        data: 'Joined_Center_Building.geojson'
-    });
-
-    // Layer: Visible footprints of the centers
-    map.addLayer({
-        id: 'centers-fill',
-        type: 'fill',
-        source: 'centers-polygons',
-        paint: {
-            'fill-color': 'yellow',
-            'fill-opacity': 0.8
-        }
-    });
-
-    // --- HOVER POPUP FOR CENTERS ---
-    map.on('mouseenter', 'centers-fill', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-
-        const coordinates = e.lngLat;
-        const props = e.features[0].properties;
-
-        // Display the center name and address in a popup
-        const centerName = props.Center || 'Unknown Center';
-        const fullAddress = props.Address_2 || 'Address not available';
-
-        popup.setLngLat(coordinates)
-            .setHTML(`
-            <div style="text-align: center; font-family: sans-serif;">
-                <h3 style="margin: 0 0 4px 0; font-size: 14px;">${centerName}</h3>
-                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullAddress}</p>
-            </div>
-        `)
-            .addTo(map);
-    });
-
-    map.on('mouseleave', 'centers-fill', () => {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-    });
-
-    // Add source for center point data
+    // Add source for center point data only
     map.addSource('centers-points', {
         type: 'geojson',
         data: 'CFC_ACTIVE_points.geojson'
@@ -140,6 +97,31 @@ map.on('load', () => {
             'circle-radius': 2.5,
             'circle-color': 'yellow',
         }
+    });
+
+    // --- HOVER POPUP FOR POINT CENTERS ---
+    map.on('mouseenter', 'centers-layer', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+
+        const coordinates = e.lngLat;
+        const props = e.features[0].properties;
+
+        const centerName = props.Center || 'Unknown Center';
+        const fullAddress = props.Address || 'Address not available';
+
+        popup.setLngLat(coordinates)
+            .setHTML(`
+            <div style="text-align: center; font-family: sans-serif;">
+                <h3 style="margin: 0 0 4px 0; font-size: 14px;">${centerName}</h3>
+                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullAddress}</p>
+            </div>
+        `)
+            .addTo(map);
+    });
+
+    map.on('mouseleave', 'centers-layer', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
     });
 });
 
@@ -163,10 +145,11 @@ map.on('click', 'community-districts-fill', (e) => {
     const sidebarContent = document.getElementById('sidebar-content');
     sidebar.classList.remove('hidden');
 
-    // Filter the centerData to show only centers in the clicked district
+    // Filter the centerData to show only the point centers in the clicked district polygon
     if (centerData) {
+        const districtPolygon = e.features[0].geometry;
         const filteredCenters = centerData.features.filter(feature => {
-            return String(feature.properties.CD) === String(clickedDistrict);
+            return pointInPolygon(feature.geometry.coordinates, districtPolygon);
         });
 
         if (filteredCenters.length > 0) {
@@ -177,7 +160,7 @@ map.on('click', 'community-districts-fill', (e) => {
                 html += `
                     <div class="center-entry" style="border-bottom: 2px solid #ccc; padding: 10px 0;">
                         <h3>${props.Center || 'Unknown Center'}</h3>
-                        <p><strong>Address:</strong> ${props.Address_2 || 'N/A'}</p>
+                        <p><strong>Address:</strong> ${props.Address || 'N/A'}</p>
                         <p><strong>Phone:</strong> ${props.Phone || 'N/A'}</p>
                         <p><strong>Days:</strong> ${props.Days || 'N/A'}</p>
                         <p><strong>Hours:</strong> ${props.Hours || 'N/A'}</p>
@@ -221,3 +204,28 @@ if (closeBtn) {
 // Global cursor changes for district fill layer
 map.on('mouseenter', 'community-districts-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
 map.on('mouseleave', 'community-districts-fill', () => { map.getCanvas().style.cursor = ''; });
+
+// Helper functions to test whether a point is inside the clicked district polygon
+function pointInPolygon(point, polygon) {
+    if (!point || !polygon || !Array.isArray(point)) return false;
+    if (polygon.type === 'Polygon') {
+        return pointInPolygonRing(point, polygon.coordinates[0]);
+    }
+    if (polygon.type === 'MultiPolygon') {
+        return polygon.coordinates.some(poly => pointInPolygonRing(point, poly[0]));
+    }
+    return false;
+}
+
+function pointInPolygonRing(point, ring) {
+    const [x, y] = point;
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const xi = ring[i][0], yi = ring[i][1];
+        const xj = ring[j][0], yj = ring[j][1];
+        const intersect = ((yi > y) !== (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    return inside;
+}

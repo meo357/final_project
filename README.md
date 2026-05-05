@@ -24,7 +24,6 @@ An interactive web map showcasing community food centers by NYC community distri
 - `style.css` - Stylesheet with custom styling for the map, legend, and header
 - `script.js` - Main JavaScript file containing the map configuration, geojson files, and interactive features
 - `CFC_ACTIVE_points.geojson` - Geojson file containing community food center data and coordinates
-- `Joined_Center_Building.geojson` - Geojson file containing PLUTO polygons for community food center buildings as well and cfc data
 - `simplified-community-districts.geojson` - Geojson file containing NYC community district polygons
 
 ### Technologies Used
