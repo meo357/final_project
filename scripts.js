@@ -23,6 +23,15 @@ fetch('./CFC_ACTIVE_points.geojson')
     .then(response => response.json())
     .then(data => {
         centerData = data;
+        // Hide the loader once data is ready
+        const loader = document.getElementById('loader-wrapper');
+        if (loader) {
+            loader.classList.add('loader-hidden');
+        }
+    })
+    .catch(error => {
+        console.error('Error loading data:', error);
+        // Optionally hide loader or show error message here
     });
 
 map.on('load', () => {
@@ -180,7 +189,7 @@ map.on('click', 'community-districts-fill', (e) => {
         });
 
         if (filteredCenters.length > 0) {
-            let html = `<h2>Community Food Connection Centers in District ${clickedDistrict}</h2>`;
+            let html = `<h2>Community Food Connection Centers in Community District ${clickedDistrict}</h2>`;
 
             filteredCenters.forEach(center => {
                 const props = center.properties;
