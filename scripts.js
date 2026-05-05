@@ -132,12 +132,27 @@ map.on('click', 'community-districts-fill', (e) => {
     // Apply filter to the highlight layer to show the selected district
     map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], clickedDistrict]);
 
-    // Animate the map focus to the clicked district
-    map.flyTo({
-        center: e.lngLat,
-        zoom: 12,
-        essential: true 
-    });
+    // Fit the map to the clicked district polygon bounds
+    const bounds = getGeometryBounds(e.features[0].geometry);
+    if (bounds) {
+        map.fitBounds(bounds, {
+            padding: {
+                top: 40,
+                bottom: 40,
+                left: 40,
+                right: 420
+            },
+            maxZoom: 14,
+            duration: 1000,
+            essential: true
+        });
+    } else {
+        map.flyTo({
+            center: e.lngLat,
+            zoom: 12,
+            essential: true
+        });
+    }
 
     // Switch UI view: Hide title card, show sidebar
     document.getElementById('title-card').classList.add('hidden');
@@ -228,4 +243,25 @@ function pointInPolygonRing(point, ring) {
         if (intersect) inside = !inside;
     }
     return inside;
+}
+
+function getGeometryBounds(geometry) {
+    if (!geometry || !geometry.type) return null;
+
+    let coords = [];
+    if (geometry.type === 'Polygon') {
+        coords = geometry.coordinates.flat();
+    } else if (geometry.type === 'MultiPolygon') {
+        coords = geometry.coordinates.flat(2);
+    } else {
+        return null;
+    }
+
+    const lons = coords.map(coord => coord[0]);
+    const lats = coords.map(coord => coord[1]);
+
+    return [
+        [Math.min(...lons), Math.min(...lats)],
+        [Math.max(...lons), Math.max(...lats)]
+    ];
 }
