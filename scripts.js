@@ -1,0 +1,223 @@
+// Access token for the Mapbox API
+mapboxgl.accessToken = 'pk.eyJ1IjoibWVvMzU3IiwiYSI6ImNtb2hpejkxMDAzamUyb29wdnFsMWU2dHUifQ._R2UlSaxpjRNccsoehAQcA'
+
+// Initialize the Mapbox Map
+const map = new mapboxgl.Map({
+    container: 'map', // ID of the HTML element
+    style: 'mapbox://styles/mapbox/standard', // Map style URL
+    center: [-74.006, 40.7128], // Starting position [lng, lat] (NYC)
+    zoom: 10 // Initial zoom level
+})
+
+// Global popup instance for center-specific information
+const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+});
+
+// Variable to store center data after fetching
+let centerData = null;
+
+// 1. Fetch the center data GeoJSON to be used for filtering in the sidebar
+fetch('./Joined_Center_Building.geojson')
+    .then(response => response.json())
+    .then(data => {
+        centerData = data;
+    });
+
+map.on('load', () => {
+    // Add Community Districts source
+    map.addSource('community-districts', {
+        type: 'geojson',
+        data: './simplified-community-districts.json'
+    });
+
+    // Layer: Fill the districts with colors based on the borough ID
+    map.addLayer({
+        id: 'community-districts-fill',
+        type: 'fill',
+        source: 'community-districts',
+        paint: {
+            'fill-color': [
+                'match',
+                // Extracts the first digit of the boro_cd to determine the borough
+                ['slice', ['get', 'boro_cd'], 0, 1],
+                '1', '#8c56e2', // Manhattan
+                '2', '#863e3e', // Bronx
+                '3', '#73e8c7', // Brooklyn
+                '4', '#44aae1', // Queens
+                '5', '#7d7e52', // Staten Island
+                '#1e293b'       // Default color
+            ],
+            'fill-opacity': 0.3
+        }
+    });
+
+    // Layer: White highlight border for the currently selected district
+    map.addLayer({
+        id: 'community-districts-highlight',
+        type: 'line',
+        source: 'community-districts',
+        layout: {
+            'line-cap': 'round',
+            'line-join': 'round'
+        },
+        paint: {
+            'line-color': 'white',
+            'line-width': 8
+        },
+        // Filter out all districts by default
+        filter: ['==', ['get', 'boro_cd'], '']
+    });
+
+    // Layer: Standard thin border for all districts
+    map.addLayer({
+        id: 'community-districts-border',
+        type: 'line',
+        source: 'community-districts',
+        paint: {
+            'line-color': '#074580',
+            'line-width': 1,
+            'line-opacity': 0.8
+        }
+    });
+
+    // Add source for center polygons (building footprints)
+    map.addSource('centers-polygons', {
+        type: 'geojson',
+        data: 'Joined_Center_Building.geojson'
+    });
+
+    // Layer: Visible footprints of the centers
+    map.addLayer({
+        id: 'centers-fill',
+        type: 'fill',
+        source: 'centers-polygons',
+        paint: {
+            'fill-color': 'yellow',
+            'fill-opacity': 0.8
+        }
+    });
+
+    // --- HOVER POPUP FOR CENTERS ---
+    map.on('mouseenter', 'centers-fill', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+
+        const coordinates = e.lngLat;
+        const props = e.features[0].properties;
+
+        // Display the center name and address in a popup
+        const centerName = props.Center || 'Unknown Center';
+        const fullAddress = props.Address_2 || 'Address not available';
+
+        popup.setLngLat(coordinates)
+            .setHTML(`
+            <div style="text-align: center; font-family: sans-serif;">
+                <h3 style="margin: 0 0 4px 0; font-size: 14px;">${centerName}</h3>
+                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullAddress}</p>
+            </div>
+        `)
+            .addTo(map);
+    });
+
+    map.on('mouseleave', 'centers-fill', () => {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+    });
+
+    // Add source for center point data
+    map.addSource('centers-points', {
+        type: 'geojson',
+        data: 'CFC_ACTIVE_points.geojson'
+    });
+
+    // Layer: Small yellow dots representing centers at higher zoom levels
+    map.addLayer({
+        id: 'centers-layer',
+        type: 'circle',
+        source: 'centers-points',
+        paint: {
+            'circle-radius': 2.5,
+            'circle-color': 'yellow',
+        }
+    });
+});
+
+// --- DISTRICT CLICK INTERACTIVITY ---
+map.on('click', 'community-districts-fill', (e) => {
+    const clickedDistrict = e.features[0].properties.boro_cd;
+
+    // Apply filter to the highlight layer to show the selected district
+    map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], clickedDistrict]);
+
+    // Animate the map focus to the clicked district
+    map.flyTo({
+        center: e.lngLat,
+        zoom: 12,
+        essential: true 
+    });
+
+    // Switch UI view: Hide title card, show sidebar
+    document.getElementById('title-card').classList.add('hidden');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarContent = document.getElementById('sidebar-content');
+    sidebar.classList.remove('hidden');
+
+    // Filter the centerData to show only centers in the clicked district
+    if (centerData) {
+        const filteredCenters = centerData.features.filter(feature => {
+            return String(feature.properties.CD) === String(clickedDistrict);
+        });
+
+        if (filteredCenters.length > 0) {
+            let html = `<h2>Community Food Connection Centers in District ${clickedDistrict}</h2>`;
+
+            filteredCenters.forEach(center => {
+                const props = center.properties;
+                html += `
+                    <div class="center-entry" style="border-bottom: 2px solid #ccc; padding: 10px 0;">
+                        <h3>${props.Center || 'Unknown Center'}</h3>
+                        <p><strong>Address:</strong> ${props.Address_2 || 'N/A'}</p>
+                        <p><strong>Phone:</strong> ${props.Phone || 'N/A'}</p>
+                        <p><strong>Days:</strong> ${props.Days || 'N/A'}</p>
+                        <p><strong>Hours:</strong> ${props.Hours || 'N/A'}</p>
+                    </div>
+                `;
+            });
+            sidebarContent.innerHTML = html;
+        } else {
+            sidebarContent.innerHTML = `<h2>District ${clickedDistrict}</h2><p>No centers found in this district.</p>`;
+        }
+    }
+});
+
+
+// --- SIDEBAR CLOSE LOGIC ---
+const closeBtn = document.getElementById('close-sidebar');
+
+if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+        // Prevents the map click event from firing when the close button is clicked
+        e.stopPropagation();
+
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.add('hidden');
+        
+        // Return UI to original state
+        document.getElementById('title-card').classList.remove('hidden');
+        
+        // Reset map view
+        map.flyTo({
+            center: [-74.006, 40.7128],
+            zoom: 10,
+            essential: true
+        });
+
+        // Clear the district highlight
+        map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
+    });
+}
+
+// Global cursor changes for district fill layer
+map.on('mouseenter', 'community-districts-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
+map.on('mouseleave', 'community-districts-fill', () => { map.getCanvas().style.cursor = ''; });

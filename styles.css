@@ -1,0 +1,172 @@
+/* Ensure the application fills the full viewport */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Map container occupies the entire screen */
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Shared styles for "Glassmorphism" effect on overlays */
+.legend, .info-card {
+  /* Translucent white background */
+  background-color: rgba(255, 255, 255, 0.4); 
+  
+  /* Backdrop blur creates the "ghostly" frosted glass look */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  /* Thin semi-transparent border for definition */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  /* Soft, airy shadow for depth */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  
+  border-radius: 15px;
+  color: #1a1a1a;
+  z-index: 1;
+}
+
+/* Legend positioning and internal styling */
+.legend {
+  bottom: 30px;
+  right: 20px;
+  padding: 15px;
+  position: absolute;
+  min-width: 120px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.legend h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #2c3e50;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+/* Circular color markers in the legend */
+.legend div span {
+  border-radius: 50%;
+  display: inline-block;
+  height: 10px;
+  margin-right: 5px;
+  width: 10px;
+}
+
+/* Title Card (Info Card) positioning and visibility transitions */
+.info-card {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 300px;
+  padding: 25px;
+  transition: opacity 0.3s ease, visibility 0.3s;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Utility class to hide the title card when a district is selected */
+.info-card.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; 
+}
+
+.info-card h1 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  color: #000;
+}
+
+.info-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* Call to Action styling */
+.info-card .cta {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 15px;
+  color: #4b0082; 
+  font-weight: 600;
+}
+
+/* Instructional text at the bottom of the card */
+.usage-hints {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    font-style: italic;
+}
+
+/* Sidebar styling for detailed information */
+.sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 350px;
+    height: 100%;
+    background: white;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+    /* Transition for sliding movement */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Hide sidebar by sliding it off-screen to the right */
+.sidebar.hidden {
+    transform: translateX(100%);
+}
+
+/* Sidebar close button styling */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close-btn:hover {
+    color: #863e3e;
+}
+
+/* Individual center entries inside the sidebar */
+.center-entry {
+    background: rgba(255, 255, 255, 0.5);
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Mapbox Popup custom styles */
+.mapboxgl-popup-content {
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    /* Prevents the popup from stealing mouse hover and flickering */
+    pointer-events: none; 
+}
