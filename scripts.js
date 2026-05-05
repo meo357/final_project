@@ -93,9 +93,15 @@ map.on('load', () => {
         id: 'centers-layer',
         type: 'circle',
         source: 'centers-points',
+        layout: {
+            'visibility': 'none'
+        },
         paint: {
-            'circle-radius': 2.5,
+            'circle-radius': 6,
             'circle-color': 'yellow',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#333',
+            'circle-opacity': 0.95
         }
     });
 
@@ -160,6 +166,12 @@ map.on('click', 'community-districts-fill', (e) => {
     const sidebarContent = document.getElementById('sidebar-content');
     sidebar.classList.remove('hidden');
 
+    // Show the point layer and display only points inside the selected district
+    if (map.getLayer('centers-layer')) {
+        map.setLayoutProperty('centers-layer', 'visibility', 'visible');
+        map.setFilter('centers-layer', ['within', e.features[0].geometry]);
+    }
+
     // Filter the centerData to show only the point centers in the clicked district polygon
     if (centerData) {
         const districtPolygon = e.features[0].geometry;
@@ -210,6 +222,12 @@ if (closeBtn) {
             zoom: 10,
             essential: true
         });
+
+        // Hide the point layer again and reset its filter
+        if (map.getLayer('centers-layer')) {
+            map.setLayoutProperty('centers-layer', 'visibility', 'none');
+            map.setFilter('centers-layer', ['==', ['get', 'Center'], '']);
+        }
 
         // Clear the district highlight
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);

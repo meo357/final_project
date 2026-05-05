@@ -64,8 +64,8 @@
             "properties": {
                 "Center": "Brooklyn Faith Seventh Day Adventist Church",
                 "Phone": "(718) 342-6712",
-                "Days": "Thu",
-                "Hours": "1 PM - 4 PM",
+                "Days": "Thu, Fri",
+                "Hours": "1 PM - 4 PM, 12 PM - 3 PM",
                 "Address": "5518 Church Ave, Brooklyn, NY 11203"
             }
         },
@@ -96,7 +96,7 @@
                 ]
             },
             "properties": {
-                "Center": "God'S Battalion Of Prayer Church",
+                "Center": "God's Battalion Of Prayer Church",
                 "Phone": "(718) 774-5447",
                 "Days": "Tue, Thu",
                 "Hours": "9 AM - 12 PM",
@@ -205,23 +205,7 @@
                 "Address": "483 Albany Ave, Brooklyn, NY 11203"
             }
         },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -73.924917,
-                    40.652374
-                ]
-            },
-            "properties": {
-                "Center": "Brooklyn Faith Sda Church",
-                "Phone": "(718) 342-6712",
-                "Days": "Fri",
-                "Hours": "12 PM - 3 PM",
-                "Address": "5518 Church Ave, Brooklyn, NY 11203"
-            }
-        },
+
         {
             "type": "Feature",
             "geometry": {
@@ -414,29 +398,12 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -73.947117,
-                    40.695509
-                ]
-            },
-            "properties": {
-                "Center": "St. Stephen Outreach Community Development Corporation",
-                "Phone": "(718) 938-4532",
-                "Days": "Wed-Fri",
-                "Hours": "11 AM - 1 PM",
-                "Address": "874 Myrtle Ave, Brooklyn, NY 11206"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
                     -73.88933,
                     40.658848
                 ]
             },
             "properties": {
-                "Center": "Bethlem Nation'S Food Pantry",
+                "Center": "Bethlem Nation's Food Pantry",
                 "Phone": "(718) 257-8300",
                 "Days": "Sat",
                 "Hours": "10 AM - 12 PM",
@@ -482,23 +449,6 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -73.895095,
-                    40.659009
-                ]
-            },
-            "properties": {
-                "Center": "Church Of God Prophecy",
-                "Phone": "(718) 649-5533",
-                "Days": "Tue",
-                "Hours": "3:30 PM - 6 PM",
-                "Address": "71 Malta St, Brooklyn, NY 11207"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
                     -73.896743,
                     40.674529
                 ]
@@ -506,8 +456,8 @@
             "properties": {
                 "Center": "Cornerstone Seventh Day Adventist Church",
                 "Phone": "(917) 915-6769",
-                "Days": "Thu",
-                "Hours": "10 AM - 12 PM",
+                "Days": "Thu, Sun",
+                "Hours": "10 AM - 12 PM, 11:30 AM - 1 PM",
                 "Address": "138 Pennsylvania Ave, Brooklyn, NY 11207"
             }
         },
@@ -623,7 +573,7 @@
                 ]
             },
             "properties": {
-                "Center": "Mylah'S Organization Inc",
+                "Center": "Mylah's Organization Inc",
                 "Phone": "NONE PROVIDED",
                 "Days": "Tue, Thu",
                 "Hours": "10:30 AM - 1 PM",
@@ -662,23 +612,6 @@
                 "Days": "Tue",
                 "Hours": "3:30 PM - 6 PM",
                 "Address": "71 Malta St, Brooklyn, NY 11207"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -73.896743,
-                    40.674529
-                ]
-            },
-            "properties": {
-                "Center": "Cornerstone Seventh Day Adventist Church",
-                "Phone": "(917) 915-6769",
-                "Days": "Sun",
-                "Hours": "11:30 AM - 1 PM",
-                "Address": "138 Pennsylvania Ave, Brooklyn, NY 11207"
             }
         },
         {
@@ -730,23 +663,6 @@
                 "Days": "Thu",
                 "Hours": "11 AM - 2 PM",
                 "Address": "511 Elton St, Brooklyn, NY 11208"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -73.878186,
-                    40.675714
-                ]
-            },
-            "properties": {
-                "Center": "Isaiah'S Temple Of Mt. Hope",
-                "Phone": "(718) 277-4038",
-                "Days": "Thu",
-                "Hours": "2 PM - 4 PM",
-                "Address": "862 Glenmore Ave, Brooklyn, NY 11208"
             }
         },
         {
@@ -861,7 +777,7 @@
                 ]
             },
             "properties": {
-                "Center": "Isaiah'S Temple Of Mt. Hope",
+                "Center": "Isaiah's Temple Of Mt. Hope",
                 "Phone": "(718) 277-4038",
                 "Days": "Tue, Thu",
                 "Hours": "2 PM - 4 PM",
@@ -1541,7 +1457,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. George'S Episcopal Church Food Pantry",
+                "Center": "St. George's Episcopal Church Food Pantry",
                 "Phone": "(718) 789-6036",
                 "Days": "Fri",
                 "Hours": "10 AM - 2 PM",
@@ -1643,7 +1559,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. George'S Episcopal Church",
+                "Center": "St. George's Episcopal Church",
                 "Phone": "(718) 789-6036",
                 "Days": "Tue-Thu",
                 "Hours": "12:30 PM - 2 PM",
@@ -1706,23 +1622,6 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -73.980235,
-                    40.686641
-                ]
-            },
-            "properties": {
-                "Center": "Next Step Community Church",
-                "Phone": "(718) 875-1858",
-                "Days": "Sat",
-                "Hours": "9 AM - 10:30 AM",
-                "Address": "360 Schermerhorn St, Brooklyn, NY 11217"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
                     -73.976556,
                     40.679697
                 ]
@@ -1764,7 +1663,7 @@
             "properties": {
                 "Center": "Next Step Community Church",
                 "Phone": "(718) 875-1858",
-                "Days": "M, Tue, Wed",
+                "Days": "Mon, Tue, Wed, Sat",
                 "Hours": "9 AM - 10 AM",
                 "Address": "360 Schermerhorn St, Brooklyn, NY 11217"
             }
@@ -2051,7 +1950,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. John'S Bread & Life Food Pantry",
+                "Center": "St. John's Bread & Life Food Pantry",
                 "Phone": "(718) 574-0058",
                 "Days": "Mon-Thu",
                 "Hours": "8 AM - 1 PM",
@@ -2136,7 +2035,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. John'S Bread & Life Program",
+                "Center": "St. John's Bread & Life Program",
                 "Phone": "(718) 574-0058",
                 "Days": "Mon-Thu",
                 "Hours": "9 AM - 12:30 PM",
@@ -2612,7 +2511,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Mark'S United Methodist Church",
+                "Center": "St. Mark's United Methodist Church",
                 "Phone": "(718) 282-6304",
                 "Days": "Thu",
                 "Hours": "12 PM - 3 PM",
@@ -2918,7 +2817,7 @@
                 ]
             },
             "properties": {
-                "Center": "God'S Deliverance Temple, Inc",
+                "Center": "God's Deliverance Temple, Inc",
                 "Phone": "(347) 234-3828",
                 "Days": "Tue",
                 "Hours": "11 AM - 12 PM",
@@ -2986,7 +2885,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Philip'S Episcopal/St. Benedict'S Pantry",
+                "Center": "St. Philip's Episcopal/St. Benedict's Pantry",
                 "Phone": "(718) 778-8700",
                 "Days": "Wed",
                 "Hours": "9 AM - 1 PM",
@@ -3700,7 +3599,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Ann'S Church Of Morrisania",
+                "Center": "St. Ann's Church Of Morrisania",
                 "Phone": "(718) 585-5632",
                 "Days": "Wed",
                 "Hours": "10AM-1PM&5-6PM",
@@ -3751,7 +3650,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Ann'S Church Of Morrisania",
+                "Center": "St. Ann's Church Of Morrisania",
                 "Phone": "(718) 585-5632",
                 "Days": "Sun",
                 "Hours": "11 AM - 1 PM",
@@ -3853,7 +3752,7 @@
                 ]
             },
             "properties": {
-                "Center": "City Harvest - St. Mary'S Mobile Market",
+                "Center": "City Harvest - St. Mary's Mobile Market",
                 "Phone": "(646) 412-0740",
                 "Days": "Tue, Sat",
                 "Hours": "9:30 AM - 11:30 AM",
@@ -4329,7 +4228,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Ann'S Corner Of Harm Reduction",
+                "Center": "St. Ann's Corner Of Harm Reduction",
                 "Phone": "(718) 585-5544",
                 "Days": "Mon-Fri",
                 "Hours": "6 AM - 12 PM",
@@ -4431,7 +4330,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Anthony'S Church",
+                "Center": "St. Anthony's Church",
                 "Phone": "(718) 931-4040",
                 "Days": "Sat",
                 "Hours": "7 AM - 1 PM",
@@ -4516,7 +4415,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Paul'S Lutheran Church",
+                "Center": "St. Paul's Lutheran Church",
                 "Phone": "(718) 822-4535",
                 "Days": "Fri",
                 "Hours": "8 AM - 10 AM",
@@ -4720,7 +4619,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Luke'S Senior Community Program",
+                "Center": "St. Luke's Senior Community Program",
                 "Phone": "(718) 882-3060",
                 "Days": "Mon-Fri",
                 "Hours": "12 PM - 1 PM",
@@ -5196,7 +5095,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. John'S Bread Of Life",
+                "Center": "St. John's Bread Of Life",
                 "Phone": "(212) 564-9070",
                 "Days": "Wed",
                 "Hours": "10 AM - 1 PM",
@@ -5541,23 +5440,6 @@
                 "Days": "Sun",
                 "Hours": "12:45 PM - 3 PM",
                 "Address": "55 W 15th St, New York, NY 10011"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -74.004877,
-                    40.724196
-                ]
-            },
-            "properties": {
-                "Center": "The Door'S Food & Nutrition Program",
-                "Phone": "(212) 941-9090",
-                "Days": "Mon-Fri",
-                "Hours": "4:30 PM - 5:30 PM",
-                "Address": "555 Broome St, New York, NY 10013"
             }
         },
         {
@@ -9157,7 +9039,7 @@
                 ]
             },
             "properties": {
-                "Center": "First Presbyterian Russell Sage Memorial Church Of Far Rocka",
+                "Center": "First Presbyterian Russell Sage Memorial Church Of Far Rockaway",
                 "Phone": "(718) 327-2440",
                 "Days": "Sat",
                 "Hours": "9 AM - 10:30 AM",
