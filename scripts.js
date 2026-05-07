@@ -123,12 +123,18 @@ map.on('load', () => {
 
         const centerName = props.Center || 'Unknown Center';
         const fullAddress = props.Address || 'Address not available';
+        const fullDays = props.Days;
+        const phonenumber = props.Phone;
+        const fullHours = props.Hours;
 
         popup.setLngLat(coordinates)
             .setHTML(`
             <div style="text-align: center; font-family: sans-serif;">
                 <h3 style="margin: 0 0 4px 0; font-size: 14px;">${centerName}</h3>
                 <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullAddress}</p>
+                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${phonenumber}</p>
+                                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullDays}</p>
+                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullHours}</p>
             </div>
         `)
             .addTo(map);
@@ -157,7 +163,7 @@ map.on('click', 'community-districts-fill', (e) => {
                 left: 40,
                 right: 420
             },
-            maxZoom: 14,
+            maxZoom: 12,
             duration: 1000,
             essential: true
         });

@@ -1146,23 +1146,6 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -73.918447,
-                    40.657194
-                ]
-            },
-            "properties": {
-                "Center": "Hope Center Development Corporation",
-                "Phone": "(718) 385-1043",
-                "Days": "Sat",
-                "Hours": "11 AM - 1:30 PM",
-                "Address": "409 E 95th St, Brooklyn, NY 11212"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
                     -73.925426,
                     40.671669
                 ]
@@ -9289,23 +9272,6 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -74.08118,
-                    40.630304
-                ]
-            },
-            "properties": {
-                "Center": "Feeding With Tlc Inc",
-                "Phone": "(718) 447-0526",
-                "Days": "Sat",
-                "Hours": "10:30 AM - 12:30 PM",
-                "Address": "309 St Pauls Ave, Staten Island, NY 10304"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
                     -74.091577,
                     40.59242
                 ]
@@ -9348,7 +9314,7 @@
                 "Center": "Project Hospitality, Inc.",
                 "Phone": "(718) 815-0800",
                 "Days": "Tue, Thu",
-                "Hours": "9 AM - 11 AM",
+                "Hours": "9 AM - 11 AM, 11:30 AM - 1 PM",
                 "Address": "205 Canal St, Staten Island, NY 10304"
             }
         },
@@ -9435,23 +9401,6 @@
                 "Days": "Sat",
                 "Hours": "10:30 AM - 12:30 PM",
                 "Address": "175 Beach St, Staten Island, NY 10304"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -74.07981,
-                    40.625096
-                ]
-            },
-            "properties": {
-                "Center": "Project Hospitality, Inc.",
-                "Phone": "(718) 815-0800",
-                "Days": "Tue, Thu",
-                "Hours": "11:30 AM - 1 PM",
-                "Address": "211 Canal St, Staten Island, NY 10304"
             }
         },
         {
