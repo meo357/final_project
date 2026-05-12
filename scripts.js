@@ -19,7 +19,18 @@ const popup = new mapboxgl.Popup({
 let centerData = null;
 let districtSelected = false;
 
-// 1. Fetch the center data GeoJSON to be used for filtering in the sidebar
+// UI Elements
+const titleCard = document.getElementById('title-card');
+const toggleBtn = document.getElementById('toggle-card');
+
+// --- 1. Toggle Button Logic ---
+if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+        titleCard.classList.toggle('minimized');
+    });
+}
+
+// 2. Fetch the center data GeoJSON to be used for filtering in the sidebar
 fetch('./CFC_ACTIVE_points.geojson')
     .then(response => response.json())
     .then(data => {
@@ -32,7 +43,6 @@ fetch('./CFC_ACTIVE_points.geojson')
     })
     .catch(error => {
         console.error('Error loading data:', error);
-        // Optionally hide loader or show error message here
     });
 
 map.on('load', () => {
@@ -50,7 +60,6 @@ map.on('load', () => {
         paint: {
             'fill-color': [
                 'match',
-                // Extracts the first digit of the boro_cd to determine the borough
                 ['slice', ['get', 'boro_cd'], 0, 1],
                 '1', '#8c56e2', // Manhattan
                 '2', '#863e3e', // Bronx
@@ -63,24 +72,20 @@ map.on('load', () => {
         }
     });
 
-    // Layer: White highlight border for the currently selected district
+    // Layer: White highlight border
     map.addLayer({
         id: 'community-districts-highlight',
         type: 'line',
         source: 'community-districts',
-        layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-        },
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
         paint: {
             'line-color': 'white',
             'line-width': 8
         },
-        // Filter out all districts by default
         filter: ['==', ['get', 'boro_cd'], '']
     });
 
-    // Layer: Standard thin border for all districts
+    // Layer: Standard thin border
     map.addLayer({
         id: 'community-districts-border',
         type: 'line',
@@ -92,20 +97,18 @@ map.on('load', () => {
         }
     });
 
-    // Add source for center point data only
+    // Add source for center point data
     map.addSource('centers-points', {
         type: 'geojson',
         data: 'CFC_ACTIVE_points.geojson'
     });
 
-    // Layer: Small yellow dots representing centers at higher zoom levels
+    // Layer: Small yellow dots
     map.addLayer({
         id: 'centers-layer',
         type: 'circle',
         source: 'centers-points',
-        layout: {
-            'visibility': 'none'
-        },
+        layout: { 'visibility': 'none' },
         paint: {
             'circle-radius': 6,
             'circle-color': 'yellow',
@@ -120,27 +123,18 @@ map.on('load', () => {
         if (!districtSelected) return;
 
         map.getCanvas().style.cursor = 'pointer';
-
-        const coordinates = e.lngLat;
         const props = e.features[0].properties;
 
-        const centerName = props.Center || 'Unknown Center';
-        const fullAddress = props.Address || 'Address not available';
-        const fullDays = props.Days;
-        const phonenumber = props.Phone;
-        const fullHours = props.Hours;
-
-        popup.setLngLat(coordinates)
+        popup.setLngLat(e.lngLat)
             .setHTML(`
             <div style="text-align: center; font-family: sans-serif;">
-                <h3 style="margin: 0 0 4px 0; font-size: 14px;">${centerName}</h3>
-                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullAddress}</p>
-                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${phonenumber}</p>
-                                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullDays}</p>
-                <p style="margin: 0; font-size: 12px; font-weight: normal; color: #666;">${fullHours}</p>
+                <h3 style="margin: 0 0 4px 0; font-size: 14px;">${props.Center || 'Unknown'}</h3>
+                <p style="margin: 0; font-size: 12px; color: #666;">${props.Address || ''}</p>
+                <p style="margin: 0; font-size: 12px; color: #666;">${props.Phone || ''}</p>
+                <p style="margin: 0; font-size: 12px; color: #666;">${props.Days || ''}</p>
+                <p style="margin: 0; font-size: 12px; color: #666;">${props.Hours || ''}</p>
             </div>
-        `)
-            .addTo(map);
+        `).addTo(map);
     });
 
     map.on('mouseleave', 'centers-layer', () => {
@@ -154,45 +148,38 @@ map.on('load', () => {
 map.on('click', 'community-districts-fill', (e) => {
     const clickedDistrict = e.features[0].properties.boro_cd;
 
-    // Apply filter to the highlight layer to show the selected district
+    // MINIMIZE title card instead of hiding it
+    if (titleCard) {
+        titleCard.classList.add('minimized');
+    }
+
+    // Apply highlight filter
     map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], clickedDistrict]);
 
-    // Fit the map to the clicked district polygon bounds
+    // Fit map to district bounds
     const bounds = getGeometryBounds(e.features[0].geometry);
     if (bounds) {
         map.fitBounds(bounds, {
-            padding: {
-                top: 40,
-                bottom: 40,
-                left: 40,
-                right: 420
-            },
+            padding: { top: 40, bottom: 40, left: 40, right: 420 },
             maxZoom: 12,
             duration: 1000,
             essential: true
         });
-    } else {
-        map.flyTo({
-            center: e.lngLat,
-            zoom: 12,
-            essential: true
-        });
     }
 
-    // Switch UI view: Hide title card, show sidebar
-    document.getElementById('title-card').classList.add('hidden');
+    // Show sidebar
     const sidebar = document.getElementById('sidebar');
     const sidebarContent = document.getElementById('sidebar-content');
     sidebar.classList.remove('hidden');
 
-    // Show the point layer and display only points inside the selected district
+    // Display centers for this district
     if (map.getLayer('centers-layer')) {
         map.setLayoutProperty('centers-layer', 'visibility', 'visible');
         map.setFilter('centers-layer', ['within', e.features[0].geometry]);
     }
     districtSelected = true;
 
-    // Filter the centerData to show only the point centers in the clicked district polygon
+    // Filter sidebar list
     if (centerData) {
         const districtPolygon = e.features[0].geometry;
         const filteredCenters = centerData.features.filter(feature => {
@@ -200,8 +187,7 @@ map.on('click', 'community-districts-fill', (e) => {
         });
 
         if (filteredCenters.length > 0) {
-            let html = `<h2>Community Food Connection Centers in Community District ${clickedDistrict}</h2>`;
-
+            let html = `<h2>CFC Centers in Community District ${clickedDistrict}</h2>`;
             filteredCenters.forEach(center => {
                 const props = center.properties;
                 html += `
@@ -216,25 +202,25 @@ map.on('click', 'community-districts-fill', (e) => {
             });
             sidebarContent.innerHTML = html;
         } else {
-            sidebarContent.innerHTML = `<h2>District ${clickedDistrict}</h2><p>No centers found in this district.</p>`;
+            sidebarContent.innerHTML = `<h2>District ${clickedDistrict}</h2><p>No centers found.</p>`;
         }
     }
 });
-
 
 // --- SIDEBAR CLOSE LOGIC ---
 const closeBtn = document.getElementById('close-sidebar');
 
 if (closeBtn) {
     closeBtn.addEventListener('click', (e) => {
-        // Prevents the map click event from firing when the close button is clicked
         e.stopPropagation();
 
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.add('hidden');
         
-        // Return UI to original state
-        document.getElementById('title-card').classList.remove('hidden');
+        // RESTORE Title Card to expanded state
+        if (titleCard) {
+            titleCard.classList.remove('minimized');
+        }
         
         // Reset map view
         map.flyTo({
@@ -243,28 +229,24 @@ if (closeBtn) {
             essential: true
         });
 
-        // Hide the point layer again and reset its filter
+        // Hide centers and clear highlight
         if (map.getLayer('centers-layer')) {
             map.setLayoutProperty('centers-layer', 'visibility', 'none');
             map.setFilter('centers-layer', ['==', ['get', 'Center'], '']);
+            map.setPaintProperty('centers-layer', 'circle-radius', 6);
         }
         districtSelected = false;
-
-        // Clear the district highlight
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
     });
 }
 
-// Global cursor changes and hover highlight for district fill layer
+// Hover effects for the district fill layer
 map.on('mouseenter', 'community-districts-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
 
-// Hover highlighting with white outline using mousemove
 map.on('mousemove', 'community-districts-fill', (e) => {
     if (e.features.length > 0) {
         const hoveredDistrict = e.features[0].properties.boro_cd;
-        // Only apply hover highlight and preview points if no district is currently selected (sidebar is hidden)
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar && sidebar.classList.contains('hidden')) {
+        if (!districtSelected) {
             map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], hoveredDistrict]);
             if (map.getLayer('centers-layer')) {
                 map.setLayoutProperty('centers-layer', 'visibility', 'visible');
@@ -277,9 +259,7 @@ map.on('mousemove', 'community-districts-fill', (e) => {
 
 map.on('mouseleave', 'community-districts-fill', () => { 
     map.getCanvas().style.cursor = '';
-    // Only clear highlight and hide preview points if no district is selected (sidebar is hidden)
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar && sidebar.classList.contains('hidden')) {
+    if (!districtSelected) {
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
         if (map.getLayer('centers-layer')) {
             map.setLayoutProperty('centers-layer', 'visibility', 'none');
@@ -289,15 +269,11 @@ map.on('mouseleave', 'community-districts-fill', () => {
     }
 });
 
-// Helper functions to test whether a point is inside the clicked district polygon
+// Helper functions (pointInPolygon, getGeometryBounds, etc.)
 function pointInPolygon(point, polygon) {
     if (!point || !polygon || !Array.isArray(point)) return false;
-    if (polygon.type === 'Polygon') {
-        return pointInPolygonRing(point, polygon.coordinates[0]);
-    }
-    if (polygon.type === 'MultiPolygon') {
-        return polygon.coordinates.some(poly => pointInPolygonRing(point, poly[0]));
-    }
+    if (polygon.type === 'Polygon') return pointInPolygonRing(point, polygon.coordinates[0]);
+    if (polygon.type === 'MultiPolygon') return polygon.coordinates.some(poly => pointInPolygonRing(point, poly[0]));
     return false;
 }
 
@@ -307,8 +283,7 @@ function pointInPolygonRing(point, ring) {
     for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
         const xi = ring[i][0], yi = ring[i][1];
         const xj = ring[j][0], yj = ring[j][1];
-        const intersect = ((yi > y) !== (yj > y)) &&
-            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        const intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
         if (intersect) inside = !inside;
     }
     return inside;
@@ -316,21 +291,11 @@ function pointInPolygonRing(point, ring) {
 
 function getGeometryBounds(geometry) {
     if (!geometry || !geometry.type) return null;
-
     let coords = [];
-    if (geometry.type === 'Polygon') {
-        coords = geometry.coordinates.flat();
-    } else if (geometry.type === 'MultiPolygon') {
-        coords = geometry.coordinates.flat(2);
-    } else {
-        return null;
-    }
-
+    if (geometry.type === 'Polygon') coords = geometry.coordinates.flat();
+    else if (geometry.type === 'MultiPolygon') coords = geometry.coordinates.flat(2);
+    else return null;
     const lons = coords.map(coord => coord[0]);
     const lats = coords.map(coord => coord[1]);
-
-    return [
-        [Math.min(...lons), Math.min(...lats)],
-        [Math.max(...lons), Math.max(...lats)]
-    ];
+    return [[Math.min(...lons), Math.min(...lats)], [Math.max(...lons), Math.max(...lats)]];
 }
