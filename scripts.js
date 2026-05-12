@@ -1,10 +1,16 @@
 // Access token for the Mapbox API
 mapboxgl.accessToken = 'pk.eyJ1IjoibWVvMzU3IiwiYSI6ImNtb2hpejkxMDAzamUyb29wdnFsMWU2dHUifQ._R2UlSaxpjRNccsoehAQcA'
 
+const bounds = [
+    [-74.488201, 40.473903], // Southwest coordinates
+    [-73.527870, 40.923268]  // Northeast coordinates
+];
+
 // Initialize the Mapbox Map
 const map = new mapboxgl.Map({
     container: 'map', // ID of the HTML element
     style: 'mapbox://styles/mapbox/standard', // Map style URL
+     maxBounds: bounds,
     config: {
     basemap: {
       theme: "monochrome"
