@@ -206,7 +206,7 @@ map.on('click', 'community-districts-fill', (e) => {
         });
 
         if (filteredCenters.length > 0) {
-            let html = `<h2>CFC Centers in Community District ${clickedDistrict}</h2>`;
+            let html = `<h2 style="position: sticky; top: 0; text-align: center; background: white; padding: 15px 0; margin: 0 -15px 0 -15px; padding-left: 15px; padding-right: 15px; border-bottom: 2px solid #ddd; z-index: 10;">CFC Centers in<br>Community District ${clickedDistrict}</h2>`;
             html += `<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px;">`;
             filteredCenters.forEach(center => {
                 const props = center.properties;
@@ -237,7 +237,7 @@ map.on('click', 'community-districts-fill', (e) => {
                 });
             });
         } else {
-            sidebarContent.innerHTML = `<h2>Community District ${clickedDistrict}</h2><p>No community food centers found.</p>`;
+            sidebarContent.innerHTML = `<h2>Community District ${clickedDistrict}</h2><p>There are no community food centers in this district.</p>`;
         }
     }
 });
