@@ -5,6 +5,11 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWVvMzU3IiwiYSI6ImNtb2hpejkxMDAzamUyb29wdnFsM
 const map = new mapboxgl.Map({
     container: 'map', // ID of the HTML element
     style: 'mapbox://styles/mapbox/standard', // Map style URL
+    config: {
+    basemap: {
+      theme: "monochrome"
+    }
+  },
     center: [-74.006, 40.7128], // Starting position [lng, lat] (NYC)
     zoom: 10 // Initial zoom level
 })
