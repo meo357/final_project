@@ -17,6 +17,7 @@ const popup = new mapboxgl.Popup({
 
 // Variable to store center data after fetching
 let centerData = null;
+let districtSelected = false;
 
 // 1. Fetch the center data GeoJSON to be used for filtering in the sidebar
 fetch('./CFC_ACTIVE_points.geojson')
@@ -116,6 +117,8 @@ map.on('load', () => {
 
     // --- HOVER POPUP FOR POINT CENTERS ---
     map.on('mouseenter', 'centers-layer', (e) => {
+        if (!districtSelected) return;
+
         map.getCanvas().style.cursor = 'pointer';
 
         const coordinates = e.lngLat;
@@ -141,6 +144,7 @@ map.on('load', () => {
     });
 
     map.on('mouseleave', 'centers-layer', () => {
+        if (!districtSelected) return;
         map.getCanvas().style.cursor = '';
         popup.remove();
     });
@@ -186,6 +190,7 @@ map.on('click', 'community-districts-fill', (e) => {
         map.setLayoutProperty('centers-layer', 'visibility', 'visible');
         map.setFilter('centers-layer', ['within', e.features[0].geometry]);
     }
+    districtSelected = true;
 
     // Filter the centerData to show only the point centers in the clicked district polygon
     if (centerData) {
@@ -243,6 +248,7 @@ if (closeBtn) {
             map.setLayoutProperty('centers-layer', 'visibility', 'none');
             map.setFilter('centers-layer', ['==', ['get', 'Center'], '']);
         }
+        districtSelected = false;
 
         // Clear the district highlight
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
@@ -256,20 +262,30 @@ map.on('mouseenter', 'community-districts-fill', () => { map.getCanvas().style.c
 map.on('mousemove', 'community-districts-fill', (e) => {
     if (e.features.length > 0) {
         const hoveredDistrict = e.features[0].properties.boro_cd;
-        // Only apply hover highlight if no district is currently selected (sidebar is hidden)
+        // Only apply hover highlight and preview points if no district is currently selected (sidebar is hidden)
         const sidebar = document.getElementById('sidebar');
         if (sidebar && sidebar.classList.contains('hidden')) {
             map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], hoveredDistrict]);
+            if (map.getLayer('centers-layer')) {
+                map.setLayoutProperty('centers-layer', 'visibility', 'visible');
+                map.setFilter('centers-layer', ['within', e.features[0].geometry]);
+                map.setPaintProperty('centers-layer', 'circle-radius', 3.5);
+            }
         }
     }
 });
 
 map.on('mouseleave', 'community-districts-fill', () => { 
     map.getCanvas().style.cursor = '';
-    // Only clear highlight if no district is selected (sidebar is hidden)
+    // Only clear highlight and hide preview points if no district is selected (sidebar is hidden)
     const sidebar = document.getElementById('sidebar');
     if (sidebar && sidebar.classList.contains('hidden')) {
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
+        if (map.getLayer('centers-layer')) {
+            map.setLayoutProperty('centers-layer', 'visibility', 'none');
+            map.setFilter('centers-layer', ['==', ['get', 'Center'], '']);
+            map.setPaintProperty('centers-layer', 'circle-radius', 6);
+        }
     }
 });
 
