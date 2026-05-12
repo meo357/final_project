@@ -118,6 +118,21 @@ map.on('load', () => {
         }
     });
 
+    // Layer: Red highlight for hovered points
+    map.addLayer({
+        id: 'centers-layer-hovered',
+        type: 'circle',
+        source: 'centers-points',
+        layout: { 'visibility': 'none' },
+        paint: {
+            'circle-radius': 5,
+            'circle-color': 'red',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#333',
+            'circle-opacity': 0.95
+        }
+    });
+
     // --- HOVER POPUP FOR POINT CENTERS ---
     map.on('mouseenter', 'centers-layer', (e) => {
         if (!districtSelected) return;
@@ -177,6 +192,10 @@ map.on('click', 'community-districts-fill', (e) => {
         map.setLayoutProperty('centers-layer', 'visibility', 'visible');
         map.setFilter('centers-layer', ['within', e.features[0].geometry]);
     }
+    if (map.getLayer('centers-layer-hovered')) {
+        map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
+        map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
+    }
     districtSelected = true;
 
     // Filter sidebar list
@@ -188,21 +207,37 @@ map.on('click', 'community-districts-fill', (e) => {
 
         if (filteredCenters.length > 0) {
             let html = `<h2>CFC Centers in Community District ${clickedDistrict}</h2>`;
+            html += `<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px;">`;
             filteredCenters.forEach(center => {
                 const props = center.properties;
                 html += `
-                    <div class="center-entry" style="border-bottom: 2px solid #ccc; padding: 10px 0;">
-                        <h3>${props.Center || 'Unknown Center'}</h3>
-                        <p><strong>Address:</strong> ${props.Address || 'N/A'}</p>
-                        <p><strong>Phone:</strong> ${props.Phone || 'N/A'}</p>
-                        <p><strong>Days:</strong> ${props.Days || 'N/A'}</p>
-                        <p><strong>Hours:</strong> ${props.Hours || 'N/A'}</p>
+                    <div class="center-entry" data-center-name="${props.Center || 'Unknown Center'}" style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; border: 2px solid #ddd; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; overflow: hidden;">
+                        <h3 style="margin: 0; font-size: 13px; line-height: 1.3;">${props.Center || 'Unknown Center'}</h3>
                     </div>
                 `;
             });
+            html += `</div>`;
             sidebarContent.innerHTML = html;
+
+            // Add hover listeners to cards
+            document.querySelectorAll('.center-entry').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const centerName = card.getAttribute('data-center-name');
+                    map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], centerName]);
+                    map.setLayoutProperty('centers-layer-hovered', 'visibility', 'visible');
+                    card.style.backgroundColor = '#e8e8e8';
+                    card.style.borderColor = '#999';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
+                    map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
+                    card.style.backgroundColor = '#f0f0f0';
+                    card.style.borderColor = '#ddd';
+                });
+            });
         } else {
-            sidebarContent.innerHTML = `<h2>District ${clickedDistrict}</h2><p>No centers found.</p>`;
+            sidebarContent.innerHTML = `<h2>Community District ${clickedDistrict}</h2><p>No community food centers found.</p>`;
         }
     }
 });
@@ -235,6 +270,10 @@ if (closeBtn) {
             map.setFilter('centers-layer', ['==', ['get', 'Center'], '']);
             map.setPaintProperty('centers-layer', 'circle-radius', 6);
         }
+        if (map.getLayer('centers-layer-hovered')) {
+            map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
+            map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
+        }
         districtSelected = false;
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
     });
@@ -253,6 +292,9 @@ map.on('mousemove', 'community-districts-fill', (e) => {
                 map.setFilter('centers-layer', ['within', e.features[0].geometry]);
                 map.setPaintProperty('centers-layer', 'circle-radius', 3.5);
             }
+            if (map.getLayer('centers-layer-hovered')) {
+                map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
+            }
         }
     }
 });
@@ -265,6 +307,9 @@ map.on('mouseleave', 'community-districts-fill', () => {
             map.setLayoutProperty('centers-layer', 'visibility', 'none');
             map.setFilter('centers-layer', ['==', ['get', 'Center'], '']);
             map.setPaintProperty('centers-layer', 'circle-radius', 6);
+        }
+        if (map.getLayer('centers-layer-hovered')) {
+            map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
         }
     }
 });
