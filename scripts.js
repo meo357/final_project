@@ -249,9 +249,29 @@ if (closeBtn) {
     });
 }
 
-// Global cursor changes for district fill layer
+// Global cursor changes and hover highlight for district fill layer
 map.on('mouseenter', 'community-districts-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
-map.on('mouseleave', 'community-districts-fill', () => { map.getCanvas().style.cursor = ''; });
+
+// Hover highlighting with white outline using mousemove
+map.on('mousemove', 'community-districts-fill', (e) => {
+    if (e.features.length > 0) {
+        const hoveredDistrict = e.features[0].properties.boro_cd;
+        // Only apply hover highlight if no district is currently selected (sidebar is hidden)
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && sidebar.classList.contains('hidden')) {
+            map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], hoveredDistrict]);
+        }
+    }
+});
+
+map.on('mouseleave', 'community-districts-fill', () => { 
+    map.getCanvas().style.cursor = '';
+    // Only clear highlight if no district is selected (sidebar is hidden)
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('hidden')) {
+        map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
+    }
+});
 
 // Helper functions to test whether a point is inside the clicked district polygon
 function pointInPolygon(point, polygon) {
