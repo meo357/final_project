@@ -10,12 +10,12 @@ const bounds = [
 const map = new mapboxgl.Map({
     container: 'map', // ID of the HTML element
     style: 'mapbox://styles/mapbox/standard', // Map style URL
-     maxBounds: bounds,
+    maxBounds: bounds,
     config: {
-    basemap: {
-      theme: "monochrome"
-    }
-  },
+        basemap: {
+            theme: "monochrome"
+        }
+    },
     center: [-74.006, 40.7128], // Starting position [lng, lat] (NYC)
     zoom: 10 // Initial zoom level
 })
@@ -230,9 +230,12 @@ map.on('click', 'community-districts-fill', (e) => {
             html += `</div>`;
             sidebarContent.innerHTML = html;
 
-            // Add hover listeners to cards
+            let selectedCard = null;
+
+            // Add hover and click listeners to cards
             document.querySelectorAll('.center-entry').forEach(card => {
                 card.addEventListener('mouseenter', () => {
+                    if (selectedCard) return;
                     const centerName = card.getAttribute('data-center-name');
                     map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], centerName]);
                     map.setLayoutProperty('centers-layer-hovered', 'visibility', 'visible');
@@ -241,10 +244,36 @@ map.on('click', 'community-districts-fill', (e) => {
                 });
 
                 card.addEventListener('mouseleave', () => {
+                    if (selectedCard) return;
                     map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
                     map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
                     card.style.backgroundColor = '#f0f0f0';
                     card.style.borderColor = '#ddd';
+                });
+
+                card.addEventListener('click', () => {
+                    const centerName = card.getAttribute('data-center-name');
+                    
+                    if (selectedCard === card) {
+                        // Deselect if clicking the same card
+                        selectedCard = null;
+                        map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
+                        map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
+                        card.style.backgroundColor = '#f0f0f0';
+                        card.style.borderColor = '#ddd';
+                    } else {
+                        // Deselect previous card
+                        if (selectedCard) {
+                            selectedCard.style.backgroundColor = '#f0f0f0';
+                            selectedCard.style.borderColor = '#ddd';
+                        }
+                        // Select new card
+                        selectedCard = card;
+                        map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], centerName]);
+                        map.setLayoutProperty('centers-layer-hovered', 'visibility', 'visible');
+                        card.style.backgroundColor = '#e8e8e8';
+                        card.style.borderColor = '#999';
+                    }
                 });
             });
         } else {
@@ -262,12 +291,12 @@ if (closeBtn) {
 
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.add('hidden');
-        
+
         // RESTORE Title Card to expanded state
         if (titleCard) {
             titleCard.classList.remove('minimized');
         }
-        
+
         // Reset map view
         map.flyTo({
             center: [-74.006, 40.7128],
@@ -310,7 +339,7 @@ map.on('mousemove', 'community-districts-fill', (e) => {
     }
 });
 
-map.on('mouseleave', 'community-districts-fill', () => { 
+map.on('mouseleave', 'community-districts-fill', () => {
     map.getCanvas().style.cursor = '';
     if (!districtSelected) {
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
