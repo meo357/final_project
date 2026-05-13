@@ -171,8 +171,10 @@ body, html {
     box-shadow: -2px 0 5px rgba(0,0,0,0.2);
     transition: transform 0.3s ease-in-out;
     z-index: 1000;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar.hidden {
@@ -180,15 +182,21 @@ body, html {
 }
 
 .close-btn {
-    position: absolute;
+    position: sticky;
     top: 10px;
-    right: 15px;
-    background: none;
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.9);
     border: none;
     font-size: 24px;
     cursor: pointer;
     color: #333;
-    z-index: 100;
+    z-index: 101;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .close-btn:hover {
