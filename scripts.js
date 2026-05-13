@@ -28,6 +28,8 @@ const popup = new mapboxgl.Popup({
 
 // Variable to store center data after fetching
 let centerData = null;
+let districtStats = null;
+let districtStatsMap = {};
 let districtSelected = false;
 
 // UI Elements
@@ -46,15 +48,103 @@ fetch('./CFC_ACTIVE_points.geojson')
     .then(response => response.json())
     .then(data => {
         centerData = data;
-        // Hide the loader once data is ready
+        // Hide the loader once data is ready if CSV is also loaded
         const loader = document.getElementById('loader-wrapper');
-        if (loader) {
+        if (loader && districtStats) {
             loader.classList.add('loader-hidden');
         }
     })
     .catch(error => {
         console.error('Error loading data:', error);
     });
+
+// 2b. Fetch the district stats CSV
+fetch('./community_district_stats.csv')
+    .then(response => response.text())
+    .then(text => {
+        districtStats = parseCsv(text);
+        districtStatsMap = {};
+        districtStats.forEach(row => {
+            if (row.boro_cd) {
+                districtStatsMap[row.boro_cd] = row;
+            }
+        });
+        const loader = document.getElementById('loader-wrapper');
+        if (loader && centerData) {
+            loader.classList.add('loader-hidden');
+        }
+    })
+    .catch(error => {
+        console.error('Error loading stats CSV:', error);
+    });
+
+function parseCsv(text) {
+    const lines = text.trim().split(/\r?\n/);
+    if (!lines.length) return [];
+
+    const headers = lines[0].split(',').map(header => header.trim());
+    const rows = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line.trim()) continue;
+
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let j = 0; j < line.length; j++) {
+            const char = line[j];
+            if (char === '"') {
+                if (inQuotes && line[j + 1] === '"') {
+                    current += '"';
+                    j++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+                continue;
+            }
+
+            if (char === ',' && !inQuotes) {
+                values.push(current);
+                current = '';
+                continue;
+            }
+
+            current += char;
+        }
+
+        values.push(current);
+
+        const row = {};
+        headers.forEach((header, index) => {
+            row[header] = values[index] !== undefined ? values[index].trim() : '';
+        });
+
+        rows.push(row);
+    }
+
+    return rows;
+}
+
+function getDistrictDisplayName(geogName) {
+    if (!geogName) return '';
+    // Remove leading code like MN01 and remove trailing parenthetical text
+    const cleaned = geogName.replace(/^[A-Z]{2}\d{2}\s*/, '').replace(/\s*\([^)]*\)$/, '').trim();
+    return cleaned;
+}
+
+function formatNumber(value) {
+    if (value === undefined || value === null || value === '') return 'N/A';
+    const parsed = Number(String(value).replace(/[^0-9.-]+/g, ''));
+    return Number.isFinite(parsed) ? parsed.toLocaleString() : String(value);
+}
+
+function formatCurrency(value) {
+    if (value === undefined || value === null || value === '') return 'N/A';
+    const parsed = Number(String(value).replace(/[^0-9.-]+/g, ''));
+    return Number.isFinite(parsed) ? '$' + parsed.toLocaleString() : String(value);
+}
 
 map.on('load', () => {
     // Add Community Districts source
@@ -216,8 +306,25 @@ map.on('click', 'community-districts-fill', (e) => {
             return pointInPolygon(feature.geometry.coordinates, districtPolygon);
         });
 
+        const stats = districtStatsMap[clickedDistrict];
+        let statsHtml = '';
+        if (stats) {
+            statsHtml = `
+                <div class="sidebar-stats">
+                    <div class="stats-row"><strong>Community District:</strong> ${getDistrictDisplayName(stats.GeogName)}</div>
+                    <div class="stats-row"><strong>Population:</strong> ${formatNumber(stats.Population)}</div>
+                    <div class="stats-row"><strong>Median Household Income:</strong> ${formatCurrency(stats['Median Household income'])}</div>
+                    <div class="stats-row"><strong>Number of Households receiving SNAP benefits:</strong> ${formatNumber(stats.SNAP)}</div>
+                    <div class="stats-row"><strong>Population Below Poverty Level:</strong> ${formatNumber(stats['Below Poverty level'])}</div>
+                    <div class="stats-row"><strong>Residents per CFC Center by Community District:</strong> ${formatNumber(stats['Center per pop'])}</div>
+                </div>
+            `;
+        }
+
+        let html = `<h2 style="position: sticky; top: 0; text-align: center; background: white; padding: 35px 15px 15px 15px; margin: -20px -15px 0 -15px; border-bottom: 2px solid #ddd; z-index: 10;">CFC Centers in<br>Community District ${clickedDistrict}</h2>`;
+        html += statsHtml;
+
         if (filteredCenters.length > 0) {
-            let html = `<h2 style="position: sticky; top: 0; text-align: center; background: white; padding: 15px 0; margin: 0 -15px 0 -15px; padding-left: 15px; padding-right: 15px; border-bottom: 2px solid #ddd; z-index: 10;">CFC Centers in<br>Community District ${clickedDistrict}</h2>`;
             html += `<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px;">`;
             filteredCenters.forEach(center => {
                 const props = center.properties;
@@ -277,7 +384,7 @@ map.on('click', 'community-districts-fill', (e) => {
                 });
             });
         } else {
-            sidebarContent.innerHTML = `<h2>Community District ${clickedDistrict}</h2><p>There are no community food centers in this district.</p>`;
+            sidebarContent.innerHTML = `${html}<p style="margin-top: 15px;">There are no community food centers in this district.</p>`;
         }
     }
 });

@@ -1,0 +1,72 @@
+GeogName,boro_cd,Count,Population,Median Household income,SNAP,Below Poverty level,Center per pop
+MN01 Financial District-Tribeca (CD 1 Equivalent),101,1,"71,865","200,000",993,"68,551",71865
+MN02 Greenwich Village-SoHo (CD 2 Equivalent),102,7,"86,202","157,525","1,720","80,852",12315
+MN03 Lower East Side-Chinatown (CD 3 Equivalent),103,12,"153,288","58,967","19,576","147,229",12774
+MN04 Chelsea-Hell's Kitchen (CD 4 Approximation),104,9,"117,099","116,306","6,378","115,619",13011
+MN05 Midtown-Flatiron-Union Square (CD 5 Approximation),105,8,"51,619","167,989","1,868","48,692",6452
+MN06 East Midtown-Murray Hill (CD 6 Approximation),106,0,"145,360","154,907","2,887","140,961",0
+MN07 Upper West Side (CD 7 Approximation),107,9,"218,761","144,026","7,363","214,612",24307
+MN08 Upper East Side-Roosevelt Island (CD 8 Equivalent),108,9,"212,308","153,866","4,430","210,038",23590
+MN09 Morningside Heights-Hamilton Heights (CD 9 Equivalent),109,13,"112,774","65,048","9,251","100,950",8675
+MN10 Harlem (CD 10 Equivalent),110,19,"134,893","59,061","13,974","134,265",7100
+MN11 East Harlem (CD 11 Equivalent),111,14,"124,499","40,975","16,004","121,051",8893
+MN12 Washington Heights-Inwood (CD 12 Equivalent),112,9,"188,591","67,024","21,178","185,440",20955
+MN64 Central Park (JIA 64 Equivalent),164,0,0,,0,0,0
+BX01 Melrose-Mott Haven-Port Morris (CD 1 Approximation),201,15,"96,910","31,296","19,634","96,493",6461
+BX02 Longwood-Hunts Point (CD 2 Approximation),202,7,"55,126","39,739","9,486","54,078",7875
+BX03 Morrisania-Crotona Park East (CD 3 Approximation),203,12,"87,924","33,688","16,839","87,189",7327
+BX04 Highbridge-Concourse (CD 4 Approximation),204,11,"149,631","42,143","26,016","147,342",13603
+BX05 Morris Heights-Mount Hope (CD 5 Approximation),205,11,"133,897","39,638","22,229","132,897",12172
+BX06 Tremont-Belmont-West Farms (CD 6 Approximation),206,6,"87,093","33,090","17,170","83,134",14516
+BX07 Fordham-Bedford Park-Norwood (CD 7 Approximation),207,6,"136,125","46,185","20,483","134,031",22688
+BX08 Riverdale-Kingsbridge-Marble Hill (CD 8 Approximation),208,2,"105,777","75,226","8,566","100,735",52889
+BX09 Soundview-Parkchester (CD 9 Approximation),209,14,"170,654","50,178","20,719","169,110",12190
+BX10 Co-op City-Throgs Neck (CD 10 Approximation),210,4,"128,362","70,292","9,360","125,244",32091
+BX11 Pelham Parkway-Morris Park (CD 11 Approximation),211,2,"113,982","65,063","11,159","110,430",56991
+BX12 Wakefield-Williamsbridge-Eastchester (CD 12 Approximation),212,13,"160,621","66,304","15,516","158,121",12355
+BX26 Van Cortlandt Park (JIA 26 Equivalent),226,0,56,"106,249",0,56,0
+BX27 Bronx Park (JIA 27 Approximation),227,0,26,"67,498",4,26,0
+BX28 Pelham Bay Park (JIA 28 Approximation),228,0,57,"45,499",0,57,0
+BK01 Williamsburg-Greenpoint (CD 1 Equivalent),301,3,"203,002","102,807","16,139","202,294",67667
+BK02 Downtown Brooklyn-Fort Greene (CD 2 Approximation),302,7,"125,637","145,094","6,153","119,891",17948
+BK03 Bedford-Stuyvesant (CD 3 Approximation),303,22,"180,283","77,546","16,774","179,468",8195
+BK04 Bushwick (CD 4 Equivalent),304,10,"111,975","83,441","9,688","111,441",11198
+BK05 East New York-Cypress Hills (CD 5 Approximation),305,24,"201,036","54,145","25,720","199,043",8377
+BK06 Park Slope-Carroll Gardens (CD 6 Approximation),306,9,"121,009","165,947","4,423","120,194",13445
+BK07 Sunset Park-Windsor Terrace (CD 7 Approximation),307,5,"120,253","84,767","7,654","117,758",24051
+BK08 Crown Heights (North) (CD 8 Approximation),308,9,"109,719","90,978","8,634","108,766",12191
+BK09 Crown Heights (South) (CD 9 Approximation),309,11,"97,675","73,751","8,347","96,388",8880
+BK10 Bay Ridge-Dyker Heights (CD 10 Approximation),310,2,"125,053","87,994","6,479","124,201",62527
+BK11 Bensonhurst-Bath Beach (CD 11 Approximation),311,8,"182,754","68,756","15,413","181,651",22844
+BK12 Borough Park-Kensington (CD 12 Approximation),312,7,"194,695","67,808","15,222","192,953",27814
+BK13 Coney Island-Brighton Beach (CD 13 Approximation),313,8,"110,145","45,489","17,447","108,518",13768
+BK14 Flatbush-Midwood (CD 14 Approximation),314,11,"159,561","80,062","13,211","158,646",14506
+BK15 Sheepshead Bay-Gravesend (East) (CD 15 Approximation),315,3,"156,462","74,164","11,601","155,257",52154
+BK16 Ocean Hill-Brownsville (CD 16 Approximation),316,14,"97,145","42,086","15,109","96,626",6939
+BK17 East Flatbush (CD 17 Approximation),317,26,"157,180","68,394","13,538","155,047",6045
+BK18 Canarsie-Flatlands (CD 18 Approximation),318,13,"192,709","86,729","10,419","191,560",14824
+BK55 Prospect Park (JIA 55 Approximation),355,0,0,,0,0,0
+BK56 Jamaica Bay (West) (JIA 56 Approximation),356,0,13,"137,498",0,13,0
+QN01 Astoria-Queensbridge (CD 1 Equivalent),401,6,"179,054","90,640","9,988","174,708",29842
+QN02 Long Island City-Sunnyside-Woodside (CD 2 Approximation),402,5,"123,823","93,496","4,607","122,991",24765
+QN03 Jackson Heights-East Elmhurst (CD 3 Approximation),403,15,"161,945","78,398","9,887","160,317",10796
+QN04 Elmhurst-Corona (CD 4 Approximation),404,4,"168,616","69,434","13,011","165,947",42154
+QN05 Ridgewood-Maspeth-Middle Village (CD 5 Approximation),405,6,"181,189","87,674","7,398","180,159",30198
+QN06 Forest Hills-Rego Park (CD 6 Approximation),406,3,"121,131","97,258","5,978","120,476",40377
+QN07 Flushing-Murray Hill-Whitestone (CD 7 Approximation),407,4,"246,517","71,737","12,625","244,108",61629
+QN08 Fresh Meadows-Hillcrest-Briarwood (CD 8 Approximation),408,6,"154,886","85,980","8,259","149,958",25814
+QN09 Kew Gardens-Richmond Hill-Woodhaven (CD 9 Approximation),409,7,"149,365","89,047","6,932","148,215",21338
+QN10 South Ozone Park-Howard Beach (CD 10 Approximation),410,6,"135,400","94,552","6,477","134,804",22567
+QN11 Auburndale-Bayside-Douglaston (CD 11 Approximation),411,1,"121,282","105,206","3,145","120,403",121282
+QN12 Jamaica-St. Albans-Hollis (CD 12 Approximation),412,44,"254,693","78,010","15,072","252,156",5788
+QN13 Queens Village-Bellerose-Rosedale (CD 13 Approximation),413,17,"205,191","107,510","7,018","202,584",12070
+QN14 The Rockaways (CD 14 Equivalent),414,8,"130,562","66,899","11,524","126,845",16320
+QN80 LaGuardia Airport (JIA 80 Approximation),480,0,0,,0,0,0
+QN81 Flushing Meadows-Corona Park (JIA 81 Approximation),481,0,0,,0,0,0
+QN82 Forest Park (JIA 82 Approximation),482,0,0,,0,0,0
+QN83 JFK International Airport (JIA 83 Approximation),483,0,0,,0,0,0
+QN84 Jamaica Bay (East) (JIA 84 Approximation),484,0,8,"200,000",0,8,0
+SI01 North Shore (CD 1 Equivalent),501,15,"181,349","85,767","12,358","178,876",12090
+SI02 Mid-Island (CD 2 Approximation),502,4,"142,132","95,190","5,706","140,088",35533
+SI03 South Shore (CD 3 Approximation),503,3,"168,729","118,478","3,996","168,454",56243
+SI95 Great Kills Park-Fort Wadsworth (JIA 95 Approximation),595,0,524,"92,141",6,499,0
