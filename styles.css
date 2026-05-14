@@ -338,3 +338,20 @@ body, html {
     opacity: 0;
     pointer-events: none;
 }
+
+/* Centers the text and ensures multi-line GeogName is balanced */
+.sidebar-stats .stats-row {
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stack label and value vertically */
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+/* Ensure the label doesn't force a left-aligned layout */
+.sidebar-stats .stats-row strong {
+    width: auto; /* Remove the fixed 160px width */
+    margin-bottom: 4px;
+    display: block;
+}
