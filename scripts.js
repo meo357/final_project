@@ -313,6 +313,7 @@ map.on('click', 'community-districts-fill', (e) => {
                 <div class="sidebar-stats">
                     <div class="stats-row"><strong>Community District:</strong> ${getDistrictDisplayName(stats.GeogName)}</div>
                     <div class="stats-row"><strong>Population:</strong> ${formatNumber(stats.Population)}</div>
+                    <div class="stats-row"><strong>Population:</strong> ${formatNumber(stats.Population)}</div>
                     <div class="stats-row"><strong>Median Household Income:</strong> ${formatCurrency(stats['Median Household income'])}</div>
                     <div class="stats-row"><strong>Number of Households receiving SNAP benefits:</strong> ${formatNumber(stats.SNAP)}</div>
                     <div class="stats-row"><strong>Population Below Poverty Level:</strong> ${formatNumber(stats['Below Poverty level'])}</div>
@@ -329,8 +330,8 @@ map.on('click', 'community-districts-fill', (e) => {
             filteredCenters.forEach(center => {
                 const props = center.properties;
                 html += `
-                    <div class="center-entry" data-center-name="${props.Center || 'Unknown Center'}" style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; border: 2px solid #ddd; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; overflow: hidden;">
-                        <h3 style="margin: 0; font-size: 13px; line-height: 1.3;">${props.Center || 'Unknown Center'}</h3>
+                    <div class="center-entry" data-center-name="${props.Center || 'Unknown Center'}">
+                        <h3>${props.Center || 'Unknown Center'}</h3>
                     </div>
                 `;
             });
