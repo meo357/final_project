@@ -313,7 +313,6 @@ map.on('click', 'community-districts-fill', (e) => {
                 <div class="sidebar-stats">
                     <div class="stats-row"><strong>Community District:</strong> ${getDistrictDisplayName(stats.GeogName)}</div>
                     <div class="stats-row"><strong>Population:</strong> ${formatNumber(stats.Population)}</div>
-                    <div class="stats-row"><strong>Population:</strong> ${formatNumber(stats.Population)}</div>
                     <div class="stats-row"><strong>Median Household Income:</strong> ${formatCurrency(stats['Median Household income'])}</div>
                     <div class="stats-row"><strong>Number of Households receiving SNAP benefits:</strong> ${formatNumber(stats.SNAP)}</div>
                     <div class="stats-row"><strong>Population Below Poverty Level:</strong> ${formatNumber(stats['Below Poverty level'])}</div>
