@@ -311,7 +311,7 @@ map.on('click', 'community-districts-fill', (e) => {
         if (stats) {
             statsHtml = `
                 <div class="sidebar-stats">
-                    <div class="stats-row"> <strong>Community District:</strong><span>${getDistrictDisplayName(stats.GeogName)}</span></div>
+                    <div class="stats-row"> <strong>Neighborhoods:</strong><span>${getDistrictDisplayName(stats.GeogName)}</span></div>
                     <div class="stats-row"><strong>Population:</strong> ${formatNumber(stats.Population)}</div>
                     <div class="stats-row"><strong>Median Household Income:</strong> ${formatCurrency(stats['Median Household income'])}</div>
                     <div class="stats-row"><strong>Number of Households receiving SNAP benefits:</strong> ${formatNumber(stats.SNAP)}</div>
