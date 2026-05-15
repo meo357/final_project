@@ -20,21 +20,76 @@ const map = new mapboxgl.Map({
     zoom: 10 // Initial zoom level
 })
 
-// Global popup instance for center-specific information
+// 1. THIS IS FOR THE INDIVIDUAL CENTERS (STAYS AS IS)
 const popup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false
 });
 
-// Variable to store center data after fetching
+// 2. THIS IS FOR THE DISTRICT HOVER PREVIEW (NEW NAME)
+const districtPopup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+    className: 'district-tooltip',
+    offset: 15
+});
+
+// 3. YOUR DATA VARIABLES
 let centerData = null;
 let districtStats = null;
 let districtStatsMap = {};
 let districtSelected = false;
 
-// UI Elements
+// 4. UI Elements
 const titleCard = document.getElementById('title-card');
 const toggleBtn = document.getElementById('toggle-card');
+
+// --- UPDATED HOVER LOGIC ---
+map.on('mousemove', 'community-districts-fill', (e) => {
+    if (e.features.length > 0) {
+        const hoveredDistrict = e.features[0].properties.boro_cd;
+        
+        if (!districtSelected) {
+            map.getCanvas().style.cursor = 'pointer';
+            map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], hoveredDistrict]);
+            
+            // Show the preview tooltip
+            const stats = districtStatsMap[hoveredDistrict];
+            if (stats) {
+                const displayName = getDistrictDisplayName(stats.GeogName);
+                const count = stats.Count;
+                
+                districtPopup.setLngLat(e.lngLat)
+                    .setHTML(`
+                        <div class="tooltip-content">
+                            <strong>${displayName}</strong>
+                            <p>${count} Food Connection Centers</p>
+                        </div>
+                    `)
+                    .addTo(map);
+            }
+
+            if (map.getLayer('centers-layer')) {
+                map.setLayoutProperty('centers-layer', 'visibility', 'visible');
+                map.setFilter('centers-layer', ['within', e.features[0].geometry]);
+                map.setPaintProperty('centers-layer', 'circle-radius', 3.5);
+            }
+        }
+    }
+});
+
+map.on('mouseleave', 'community-districts-fill', () => {
+    map.getCanvas().style.cursor = '';
+    districtPopup.remove(); // Hide tooltip when leaving district
+    
+    if (!districtSelected) {
+        map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
+        if (map.getLayer('centers-layer')) {
+            map.setLayoutProperty('centers-layer', 'visibility', 'none');
+            map.setFilter('centers-layer', ['==', ['get', 'Center'], '']);
+        }
+    }
+});
 
 // --- 1. Toggle Button Logic ---
 if (toggleBtn) {
@@ -492,3 +547,23 @@ function getGeometryBounds(geometry) {
     const lats = coords.map(coord => coord[1]);
     return [[Math.min(...lons), Math.min(...lats)], [Math.max(...lons), Math.max(...lats)]];
 }
+
+Promise.all([
+    fetch('./simplified-community-districts.json').then(res => res.json()),
+    fetch('CFC_ACTIVE_points.geojson').then(res => res.json()),
+    fetch('community_district_stats.csv').then(res => res.text())
+]).then(([districts, centers, csvData]) => {
+    
+    // ... (your data processing logic here) ...
+
+    // CRITICAL: This line must be reached to hide the spinner!
+    document.getElementById('loader-wrapper').style.opacity = '0';
+    setTimeout(() => {
+        document.getElementById('loader-wrapper').style.display = 'none';
+    }, 500);
+
+}).catch(err => {
+    console.error("Error loading data:", err);
+    // If there is an error, hide the loader anyway so the user isn't stuck
+    document.getElementById('loader-wrapper').style.display = 'none';
+});
