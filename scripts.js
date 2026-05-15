@@ -332,7 +332,7 @@ map.on('click', 'community-districts-fill', (e) => {
     if (bounds) {
         map.fitBounds(bounds, {
             padding: { top: 40, bottom: 40, left: 40, right: 420 },
-            maxZoom: 12,
+            maxZoom: 10,
             duration: 1000,
             essential: true
         });
