@@ -1537,23 +1537,6 @@
             "geometry": {
                 "type": "Point",
                 "coordinates": [
-                    -73.947586,
-                    40.68634
-                ]
-            },
-            "properties": {
-                "Center": "St. George's Episcopal Church",
-                "Phone": "(718) 789-6036",
-                "Days": "Tue-Thu",
-                "Hours": "12:30 PM - 2 PM",
-                "Address": "800 Marcy Ave, Brooklyn, NY 11216"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
                     -73.982715,
                     40.678294
                 ]
@@ -2006,23 +1989,6 @@
                 "Days": "Sat",
                 "Hours": "9:30 AM - 12 PM",
                 "Address": "1014 Gates Ave, Brooklyn, NY 11221"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -73.928921,
-                    40.690327
-                ]
-            },
-            "properties": {
-                "Center": "St. John's Bread & Life Program",
-                "Phone": "(718) 574-0058",
-                "Days": "Mon-Thu",
-                "Hours": "9 AM - 12:30 PM",
-                "Address": "795 Lexington Ave, Brooklyn, NY 11221"
             }
         },
         {
@@ -3584,8 +3550,8 @@
             "properties": {
                 "Center": "St. Ann's Church Of Morrisania",
                 "Phone": "(718) 585-5632",
-                "Days": "Wed",
-                "Hours": "10AM-1PM&5-6PM",
+                "Days": "Wed, Sun",
+                "Hours": "10AM - 1PM & 5-6PM, 11 AM - 1 PM",
                 "Address": "295 St Anns Ave, Bronx, NY 10454"
             }
         },
@@ -3621,23 +3587,6 @@
                 "Days": "Fri",
                 "Hours": "10 AM - 1 PM",
                 "Address": "623 E 138th St, Bronx, NY 10454"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -73.916662,
-                    40.808444
-                ]
-            },
-            "properties": {
-                "Center": "St. Ann's Church Of Morrisania",
-                "Phone": "(718) 585-5632",
-                "Days": "Sun",
-                "Hours": "11 AM - 1 PM",
-                "Address": "295 St Anns Ave, Bronx, NY 10454"
             }
         },
         {
@@ -5231,10 +5180,10 @@
                 ]
             },
             "properties": {
-                "Center": "Trinity'S Services And Food For The Homeless, Inc.",
+                "Center": "Trinity's Services And Food For The Homeless, Inc.",
                 "Phone": "(212) 228-5254",
-                "Days": "Mon-Thu",
-                "Hours": "12:30 PM - 1:30 PM",
+                "Days": "Mon-Fri",
+                "Hours": "11 AM - 1:30 PM",
                 "Address": "602 E 9th St, New York, NY 10009"
             }
         },
@@ -5253,23 +5202,6 @@
                 "Days": "Tue, Wed",
                 "Hours": "10 AM - 2 PM",
                 "Address": "12 Ave D, New York, NY 10009"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -73.980041,
-                    40.726049
-                ]
-            },
-            "properties": {
-                "Center": "Trinity'S Services And Food For The Homeless, Inc.",
-                "Phone": "(212) 228-5254",
-                "Days": "Mon-Fri",
-                "Hours": "11 AM - 12 PM",
-                "Address": "602 E 9th St, New York, NY 10009"
             }
         },
         {
@@ -5316,7 +5248,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Peter'S Food Pantry",
+                "Center": "St. Peter's Food Pantry",
                 "Phone": "(212) 929-2390",
                 "Days": "Sat",
                 "Hours": "10:30 AM - 11:30 AM",
@@ -5367,7 +5299,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Joseph'S Soup Kitchen, Inc",
+                "Center": "St. Joseph's Soup Kitchen, Inc",
                 "Phone": "NONE PROVIDED",
                 "Days": "Sat",
                 "Hours": "1:30 PM - 3 PM",
@@ -5435,7 +5367,7 @@
                 ]
             },
             "properties": {
-                "Center": "The Door'S Food & Nutrition Program",
+                "Center": "The Door's Food & Nutrition Program",
                 "Phone": "(212) 941-9090",
                 "Days": "Mon-Fri",
                 "Hours": "4:30 PM - 5:30 PM",
@@ -5520,7 +5452,7 @@
                 ]
             },
             "properties": {
-                "Center": "Gay Men'S Health Crisis",
+                "Center": "Gay Men's Health Crisis",
                 "Phone": "(212) 637-1000",
                 "Days": "Tue-Thu",
                 "Hours": "11 AM - 2 PM",
@@ -5537,7 +5469,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Paul'S House Inc.",
+                "Center": "St. Paul's House Inc.",
                 "Phone": "(212) 265-5433",
                 "Days": "Tue",
                 "Hours": "9:30 AM - 10:30 AM",
@@ -5554,10 +5486,10 @@
                 ]
             },
             "properties": {
-                "Center": "St. Paul'S House Inc.",
+                "Center": "St. Paul's House Inc.",
                 "Phone": "(212) 265-5433",
-                "Days": "Mon, Wed, Fri",
-                "Hours": "8 AM - 8:30 AM",
+                "Days": "Mon Wed Fri, Sat",
+                "Hours": "8 AM - 8:30 AM, 10 AM - 11:30 AM",
                 "Address": "335 W 51st St, New York, NY 10019"
             }
         },
@@ -5848,23 +5780,6 @@
                 "Days": "Wed",
                 "Hours": "12 PM - 1:30 PM",
                 "Address": "12 W 108th St, New York, NY 10025"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -73.969424,
-                    40.796454
-                ]
-            },
-            "properties": {
-                "Center": "St. Michael'S Church",
-                "Phone": "(212) 222-2700",
-                "Days": "Sat",
-                "Hours": "10 AM - 11:30 AM",
-                "Address": "225 W 99th St, New York, NY 10025"
             }
         },
         {
@@ -6183,7 +6098,7 @@
                 ]
             },
             "properties": {
-                "Center": "St. Cecilia'S Parish Services",
+                "Center": "St. Cecilia's Parish Services",
                 "Phone": "(212) 348-0488",
                 "Days": "Wed",
                 "Hours": "9 AM - 12 PM",
@@ -6727,7 +6642,7 @@
                 ]
             },
             "properties": {
-                "Center": "Father Creavin'S Food Pantry",
+                "Center": "Father Creavin's Food Pantry",
                 "Phone": "(212) 281-2100",
                 "Days": "Tue",
                 "Hours": "9 AM - 11 AM",
@@ -7526,7 +7441,7 @@
                 ]
             },
             "properties": {
-                "Center": "Bvm/St. Mary'S Church Winfield",
+                "Center": "Bvm/St. Mary's Church Winfield",
                 "Phone": "(718) 672-4848",
                 "Days": "Thu",
                 "Hours": "9:30 AM - 12 PM",
@@ -8121,7 +8036,7 @@
                 ]
             },
             "properties": {
-                "Center": "Calvary'S Mission",
+                "Center": "Calvary's Mission",
                 "Phone": "NONE PROVIDED",
                 "Days": "Fri",
                 "Hours": "3:30 PM - 6:30 PM",
@@ -8784,7 +8699,7 @@
                 ]
             },
             "properties": {
-                "Center": "Christ Church International Joseph'S House",
+                "Center": "Christ Church International Joseph's House",
                 "Phone": "(718) 276-2799",
                 "Days": "Sat",
                 "Hours": "10 AM - 12 PM",
