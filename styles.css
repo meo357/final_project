@@ -253,28 +253,54 @@ body, html {
     background: rgba(255, 255, 255, 0.92);
 }
 
+/* --- REFINED SIDEBAR STATS --- */
 .sidebar-stats {
-    background: rgba(255, 255, 255, 0.86);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
-    border-radius: 18px;
-    padding: 18px 16px;
-    color: #0f172a;
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Tight gap between rows */
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.03); /* Soft background for the whole section */
+    padding: 12px;
+    border-radius: 12px;
 }
 
-.sidebar-stats .stats-row {
-    margin-bottom: 10px;
-    font-size: 14px;
-    color: #334155;
+.stats-row {
+    display: flex !important;
+    flex-direction: row !important;
+    /* justify-content: space-between !important; */
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
 }
 
-.sidebar-stats .stats-row strong {
-    display: inline-block;
-    width: 160px;
-    color: #0f172a;
-    font-weight: 700;
+/* Zebra striping for better readability */
+.stats-row:nth-child(even) {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.stats-row strong {
+    font-size: 0.75rem; /* Slightly smaller for hierarchy */
+    text-transform: none; /* Professional look */
+    letter-spacing: 0.03em;
+    color: #1e293b; /* Muted slate color */
+    font-weight: 600;
+    flex: 1;
+}
+
+.stats-row span {
+    font-size: 0.85rem;
+    color: #1e293b; /* Stronger contrast for the data */
+    font-weight: 450;
+    font-family: 'Inter', system-ui, sans-serif;
+    text-align: right;
+}
+
+/* Highlight the Neighborhoods row slightly since it's the most important */
+.stats-row:first-child {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 4px;
+    padding-bottom: 8px;
 }
 
 .mapboxgl-popup-content {
@@ -341,11 +367,11 @@ body, html {
 
 /* Centers the text and ensures multi-line GeogName is balanced */
 .sidebar-stats .stats-row {
-    text-align: center;
+text-align: left;            /* Changed from center */
     display: flex;
-    flex-direction: column; /* Stack label and value vertically */
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;      /* Keeps the label and value stacked */
+    align-items: flex-start;     /* Changed from center to align items to the left */
+    justify-content: flex-start; /* Changed from center */
     margin-bottom: 15px;
 }
 

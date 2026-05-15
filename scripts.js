@@ -366,18 +366,39 @@ map.on('click', 'community-districts-fill', (e) => {
         if (stats) {
             statsHtml = `
                 <div class="sidebar-stats">
-                    <div class="stats-row"> <strong>Neighborhoods:</strong><span>${getDistrictDisplayName(stats.GeogName)}</span></div>
-                    <div class="stats-row"><strong>Number of Community Food Connection Centers:</strong> ${formatNumber(stats.Count)}</div>
-                    <div class="stats-row"><strong>Population:</strong> ${formatNumber(stats.Population)}</div>
-                    <div class="stats-row"><strong>Median Household Income:</strong> ${formatCurrency(stats['Median Household income'])}</div>
-                    <div class="stats-row"><strong>Number of Households receiving SNAP benefits:</strong> ${formatNumber(stats.SNAP)}</div>
-                    <div class="stats-row"><strong>Population Below Poverty Level:</strong> ${formatNumber(stats['Below Poverty level'])}</div>
-                    <div class="stats-row"><strong>Residents per CFC Center by Community District:</strong> ${formatNumber(stats['Center per pop'])}</div>
+                    <div class="stats-row">
+                        <strong>Neighborhoods:</strong>
+                        <span>${getDistrictDisplayName(stats.GeogName)}</span>
+                    </div>
+                    <div class="stats-row">
+                        <strong>Centers in District:</strong>
+                        <span>${formatNumber(stats.Count)}</span>
+                    </div>
+                    <div class="stats-row">
+                        <strong>Population:</strong>
+                        <span>${formatNumber(stats.Population)}</span>
+                    </div>
+                    <div class="stats-row">
+                        <strong>Median Household Income:</strong>
+                        <span>${formatCurrency(stats['Median Household income'])}</span>
+                    </div>
+                    <div class="stats-row">
+                        <strong>Households on SNAP:</strong>
+                        <span>${formatNumber(stats.SNAP)}</span>
+                    </div>
+                    <div class="stats-row">
+                        <strong>Below Poverty Level:</strong>
+                        <span>${formatNumber(stats['Below Poverty level'])}</span>
+                    </div>
+                    <div class="stats-row">
+                        <strong>Residents per Center:</strong>
+                        <span>${formatNumber(stats['Center per pop'])}</span>
+                    </div>
                 </div>
             `;
         }
 
-        let html = `<h2 style="position: sticky; top: 0; text-align: center; background: white; padding: 35px 15px 15px 15px; margin: -20px -15px 0 -15px; border-bottom: 2px solid #ddd; z-index: 10;">CFC Centers in<br>Community District ${clickedDistrict}</h2>`;
+        let html = `<h2 style="position: sticky; top: 0; text-align: center; background: white; padding: 15px; margin: -20px -15px -15px; border-bottom: 1px solid #ddd; z-index: 10;font-size: 1.2rem;">CFC Centers in<br>Community District ${clickedDistrict}</h2>`;
         html += statsHtml;
 
         if (filteredCenters.length > 0) {
