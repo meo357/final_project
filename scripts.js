@@ -48,17 +48,17 @@ const toggleBtn = document.getElementById('toggle-card');
 map.on('mousemove', 'community-districts-fill', (e) => {
     if (e.features.length > 0) {
         const hoveredDistrict = e.features[0].properties.boro_cd;
-        
+
         if (!districtSelected) {
             map.getCanvas().style.cursor = 'pointer';
             map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], hoveredDistrict]);
-            
+
             // Show the preview tooltip
             const stats = districtStatsMap[hoveredDistrict];
             if (stats) {
                 const displayName = getDistrictDisplayName(stats.GeogName);
                 const count = stats.Count;
-                
+
                 districtPopup.setLngLat(e.lngLat)
                     .setHTML(`
                         <div class="tooltip-content">
@@ -81,7 +81,7 @@ map.on('mousemove', 'community-districts-fill', (e) => {
 map.on('mouseleave', 'community-districts-fill', () => {
     map.getCanvas().style.cursor = '';
     districtPopup.remove(); // Hide tooltip when leaving district
-    
+
     if (!districtSelected) {
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
         if (map.getLayer('centers-layer')) {
@@ -281,9 +281,9 @@ map.on('load', () => {
         source: 'centers-points',
         layout: { 'visibility': 'none' },
         paint: {
-            'circle-radius': 5,
-            'circle-color': 'red',
-            'circle-stroke-width': 1,
+            'circle-radius': 6,
+            'circle-color': 'yellow',
+            'circle-stroke-width': 2,
             'circle-stroke-color': '#333',
             'circle-opacity': 0.95
         }
@@ -398,10 +398,14 @@ map.on('click', 'community-districts-fill', (e) => {
             `;
         }
 
+        
         let html = `<h2 style="position: sticky; top: 0; text-align: center; background: white; padding: 15px; margin: -20px -15px -15px; border-bottom: 1px solid #ddd; z-index: 10;font-size: 1.2rem;">CFC Centers in<br>Community District ${clickedDistrict}</h2>`;
         html += statsHtml;
 
+        
+        
         if (filteredCenters.length > 0) {
+            html += `<p class="instruction-text">Click on a center to learn more</p>`;
             html += `<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px;">`;
             filteredCenters.forEach(center => {
                 const props = center.properties;
@@ -419,51 +423,69 @@ map.on('click', 'community-districts-fill', (e) => {
             // Add hover and click listeners to cards
             document.querySelectorAll('.center-entry').forEach(card => {
                 card.addEventListener('mouseenter', () => {
-                    if (selectedCard) return;
+                    // Only trigger hover effects if this specific card isn't the one already selected
+                    if (selectedCard === card) return;
+
                     const centerName = card.getAttribute('data-center-name');
                     map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], centerName]);
                     map.setLayoutProperty('centers-layer-hovered', 'visibility', 'visible');
-                    card.style.backgroundColor = '#e8e8e8';
-                    card.style.borderColor = '#999';
                 });
 
                 card.addEventListener('mouseleave', () => {
-                    if (selectedCard) return;
+                    // Only reset map if this card isn't the one currently selected
+                    if (selectedCard === card) return;
+
                     map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
                     map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
-                    card.style.backgroundColor = '#f0f0f0';
-                    card.style.borderColor = '#ddd';
                 });
 
                 card.addEventListener('click', () => {
                     const centerName = card.getAttribute('data-center-name');
+                    const centerFeature = filteredCenters.find(f => f.properties.Center === centerName);
 
                     if (selectedCard === card) {
-                        // Deselect if clicking the same card
+                        // DESELECT: User clicked the same card again
+                        selectedCard.classList.remove('selected');
                         selectedCard = null;
                         map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
-                        map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
-                        card.style.backgroundColor = '#f0f0f0';
-                        card.style.borderColor = '#ddd';
+                        popup.remove();
                     } else {
-                        // Deselect previous card
+                        // SELECT NEW: Clear old selection class and set new one
                         if (selectedCard) {
-                            selectedCard.style.backgroundColor = '#f0f0f0';
-                            selectedCard.style.borderColor = '#ddd';
+                            selectedCard.classList.remove('selected');
                         }
-                        // Select new card
                         selectedCard = card;
+                        card.classList.add('selected');
+
+                        // Map highlights and Popup logic
                         map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], centerName]);
                         map.setLayoutProperty('centers-layer-hovered', 'visibility', 'visible');
-                        card.style.backgroundColor = '#e8e8e8';
-                        card.style.borderColor = '#999';
+
+                        if (centerFeature) {
+                            const props = centerFeature.properties;
+                            popup.setLngLat(centerFeature.geometry.coordinates)
+                                .setHTML(`
+                        <div style="text-align: center; font-family: sans-serif;">
+                            <h3 style="margin: 0 0 4px 0; font-size: 14px;">${props.Center || 'Unknown'}</h3>
+                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Address || ''}</p>
+                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Phone || ''}</p>
+                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Days || ''}</p>
+                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Hours || ''}</p>
+                        </div>
+                    `)
+                                .addTo(map);
+                        }
                     }
                 });
             });
-        } else {
-            sidebarContent.innerHTML = `${html}<p style="margin-top: 15px;">There are no community food centers in this district.</p>`;
+            /* --- TO HERE --- */
+
+
         }
     }
+         else {
+    sidebarContent.innerHTML = `${html}<p style="margin-top: 15px;">There are no community food centers in this district.</p>`;
+};
 });
 
 // --- SIDEBAR CLOSE LOGIC ---
@@ -498,6 +520,7 @@ if (closeBtn) {
             map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
             map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
         }
+        popup.remove();
         districtSelected = false;
         map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], '']);
     });
@@ -574,7 +597,7 @@ Promise.all([
     fetch('CFC_ACTIVE_points.geojson').then(res => res.json()),
     fetch('community_district_stats.csv').then(res => res.text())
 ]).then(([districts, centers, csvData]) => {
-    
+
     // ... (your data processing logic here) ...
 
     // CRITICAL: This line must be reached to hide the spinner!

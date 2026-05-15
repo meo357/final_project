@@ -236,7 +236,7 @@ body, html {
     justify-content: center;
     text-align: center;
     color: #0f172a;
-    cursor: default;
+    cursor: pointer;
     transition: transform 0.25s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
@@ -253,6 +253,20 @@ body, html {
     background: rgba(255, 255, 255, 0.92);
 }
 
+/* Update your hover rule to be slightly more specific */
+.center-entry:not(.selected):hover {
+    transform: translateY(-2px);
+    border-color: rgba(134, 62, 62, 0.45);
+    background: rgba(255, 255, 255, 0.92); /* Lighter hover color */
+}
+
+/* Add this new class for the "clicked" state */
+.center-entry.selected {
+    background: #e8e8e8 !important; /* The sticky gray you want */
+    border-color: #999 !important;
+    transform: translateY(0);
+}
+
 /* --- REFINED SIDEBAR STATS --- */
 .sidebar-stats {
     display: flex;
@@ -267,7 +281,7 @@ body, html {
 .stats-row {
     display: flex !important;
     flex-direction: row !important;
-    /* justify-content: space-between !important; */
+    justify-content: space-between !important;
     align-items: center;
     padding: 6px 8px;
     border-radius: 6px;
@@ -414,4 +428,13 @@ text-align: left;            /* Changed from center */
 /* Hide the default Mapbox popup tip (optional, for a cleaner float) */
 .district-tooltip .mapboxgl-popup-tip {
     display: none;
+}
+
+.instruction-text {
+    text-align: center;
+    font-size: 14px;
+    color: #64748b; /* Muted slate color to match your stats */
+    margin: 10px 0 5px 0;
+    font-style: default;
+    font-family: 'Inter', system-ui, sans-serif;
 }
