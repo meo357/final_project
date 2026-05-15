@@ -13,10 +13,10 @@ An interactive web map showcasing community food centers by NYC community distri
   - 🔴 The Bronx (Red)
   - 🟠 Staten Island (Orange)
   - 🟣 Manhattan (Purple)
-- **Interactive Popups**: Click a community district to see a list of each Community Food Center and their respective locations, open days, and hours. Hover above each highlighted community food center to see its name and address.
+- **Interactive Popups**: Click a community district to see the selected community district's economic statistics and corresponding community food centers. Hover above each highlighted community food center to see its name and address.
 - **Floating Legend**: Bottom-right legend shows each borough and their corresponding colors
 - **Polished Header**: Eye-catching gradient header with project description and call-to-action
-- **Sidebar**: Right sidebar lists the selected community district's corresponding community food centers and their information.
+- **Sidebar**: Right sidebar lists the selected community district's economic statistics and corresponding community food centers. Click on a food center card to see their respective locations, open days, and hours
 
 ### Files
 
@@ -25,6 +25,7 @@ An interactive web map showcasing community food centers by NYC community distri
 - `script.js` - Main JavaScript file containing the map configuration, geojson files, and interactive features
 - `CFC_ACTIVE_points.geojson` - Geojson file containing community food center data and coordinates
 - `simplified-community-districts.geojson` - Geojson file containing NYC community district polygons
+-`community_district_stats.csv` - CSV file containing statistical information about each community district obtained from the 2023 5-year American Community Survey.
 
 ### Technologies Used
 
@@ -38,7 +39,3 @@ An interactive web map showcasing community food centers by NYC community distri
 1. Clone this repository
 2. Open `index.html` in a web browser
 3. Explore the map and click community districts to find community food centers. 
-
-### About
-
-This map was crowdsourced during a web mapping class, with each student contributing their favorite pizza place. The result is a fun, interactive visualization of pizza preferences across different academic programs at NYU Wagner.

@@ -367,7 +367,7 @@ map.on('click', 'community-districts-fill', (e) => {
             statsHtml = `
                 <div class="sidebar-stats">
                     <div class="stats-row">
-                        <strong>Neighborhoods:</strong>
+                        <strong>Neighborhood:</strong>
                         <span>${getDistrictDisplayName(stats.GeogName)}</span>
                     </div>
                     <div class="stats-row">
@@ -387,12 +387,8 @@ map.on('click', 'community-districts-fill', (e) => {
                         <span>${formatNumber(stats.SNAP)}</span>
                     </div>
                     <div class="stats-row">
-                        <strong>Below Poverty Level:</strong>
+                        <strong>Population Below Poverty Level:</strong>
                         <span>${formatNumber(stats['Below Poverty level'])}</span>
-                    </div>
-                    <div class="stats-row">
-                        <strong>Residents per Center:</strong>
-                        <span>${formatNumber(stats['Center per pop'])}</span>
                     </div>
                 </div>
             `;
@@ -505,8 +501,11 @@ if (closeBtn) {
 
         // Reset map view
         map.flyTo({
-            center: [-74.006, 40.7128],
-            zoom: 10,
+            center: [-74.006, 40.7128], // Exact initial longitude and latitude
+            zoom: 10,                   // Exact initial zoom level
+            padding: { top: 0, bottom: 0, left: 0, right: 0 },
+            pitch: 0,                   // Reset pitch to flat view
+            bearing: 0,                 // Reset rotation to North
             essential: true
         });
 
