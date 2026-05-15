@@ -303,19 +303,13 @@ body, html {
 }
 
 .stats-row span {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: #1e293b; /* Stronger contrast for the data */
-    font-weight: 450;
+    font-weight: 600;
     font-family: 'Inter', system-ui, sans-serif;
     text-align: right;
 }
 
-/* Highlight the Neighborhoods row slightly since it's the most important */
-.stats-row:first-child {
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    margin-bottom: 4px;
-    padding-bottom: 8px;
-}
 
 .mapboxgl-popup-content {
     padding: 10px;
