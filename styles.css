@@ -16,11 +16,11 @@ body, html {
 
 /* Shared styles for "Glassmorphism" effect on overlays */
 .legend, .info-card {
-    background-color: rgba(255, 255, 255, 0.4); 
+    background-color: rgba(255, 255, 255, 0.6); /* Slightly increased background opacity */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Slightly darker border for definition */
+    box-shadow: 0 9px 32px rgba(0, 0, 0, 0.15); /* Stronger, deeper shadow */
     border-radius: 15px;
     color: #1a1a1a;
     z-index: 1;
