@@ -2,7 +2,7 @@
 
 An interactive web map showcasing community food centers by NYC community district, built using Mapbox GL JS. This project was created as part of a web mapping class and features basic interactive components taught in class.
 
-[See it live on Github Pages](https://meo357.github.io/class-4-assignment/)
+[See it live on Github Pages](https://meo357.github.io/final_project/)
 
 ### Features
 
