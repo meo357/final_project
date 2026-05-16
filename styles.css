@@ -518,3 +518,14 @@ text-align: left;            /* Changed from center */
     background: transparent;
     color: #999;
 }
+
+/* Centers the text that the user types into the box */
+#district-search {
+    text-align: center; 
+}
+
+/* Targets just the placeholder text to make it smaller */
+#district-search::placeholder {
+    font-size: 12.5px; /* Adjust this number up or down to fit perfectly */
+    text-align: center;
+}
