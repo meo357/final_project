@@ -26,25 +26,33 @@
     </div>
 
     <!-- Title Card: Provides project context and user instructions -->
-<div id="title-card" class="info-card">
-    <div class="card-header">
-        <h1>NYC Community Food Connection Centers</h1>
-        <button id="toggle-card" class="toggle-btn" title="Toggle Details">
-            <span class="arrow"></span>
-        </button>
-    </div>
-    
-    <div id="card-details">
-        <p>New York City’s Department of Social Services distributes funding to over 700 community kitchens and food pantries citywide under their Community Food Connection (CFC) program. These locations are the primary distribution centers for emergency food assistance.</p>
-        
-        <p class="cta">Explore CFC centers in your community district</p>
-        
-        <div class="usage-hints">
-            <span>Click a district to view centers</span>
-            <span>Hover over a site for details</span>
+    <div id="title-card" class="info-card">
+        <div class="card-header">
+            <h1>NYC Community Food Connection Centers</h1>
+            <button id="toggle-card" class="toggle-btn" title="Toggle Details">
+                <span class="arrow"></span>
+            </button>
+        </div>
+
+        <div id="card-details">
+            <p>New York City’s Department of Social Services distributes funding to over 700 community kitchens and food
+                pantries citywide under their Community Food Connection (CFC) program. These locations are the primary
+                distribution centers for emergency food assistance.</p>
+
+            <div class="search-container">
+                <input type="text" id="district-search" placeholder="Search neighborhood or district id..."
+                    autocomplete="off">
+                <ul id="search-results" class="hidden"></ul>
+            </div>
+
+            <p class="cta">Explore CFC centers in your community district</p>
+
+            <div class="usage-hints">
+                <span>Click a district to view centers</span>
+                <span>Hover over a site for details</span>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Retractable Sidebar: Populated dynamically with center details via JavaScript -->
     <div id="sidebar" class="sidebar hidden">
@@ -61,11 +69,11 @@
 
     <!-- Loading spinner-->
     <div id="loader-wrapper">
-    <div class="loader-container">
-        <div class="spinner"></div>
-        <p>Loading Center Data...</p>
+        <div class="loader-container">
+            <div class="spinner"></div>
+            <p>Loading Center Data...</p>
+        </div>
     </div>
-</div>
 </body>
 
 </html>

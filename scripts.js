@@ -39,6 +39,7 @@ let centerData = null;
 let districtStats = null;
 let districtStatsMap = {};
 let districtSelected = false;
+let districtsGeoJSON = null; // Stores map geometries for search lookups
 
 // 4. UI Elements
 const titleCard = document.getElementById('title-card');
@@ -316,10 +317,11 @@ map.on('load', () => {
 });
 
 // --- DISTRICT CLICK INTERACTIVITY ---
-map.on('click', 'community-districts-fill', (e) => {
-    const clickedDistrict = e.features[0].properties.boro_cd;
+// --- UNIFIED SELECTION LOGIC ---
+// This function runs exactly the same whether you click the map OR use the search bar
+function activateDistrict(feature) {
+    const clickedDistrict = feature.properties.boro_cd;
 
-    // MINIMIZE title card instead of hiding it
     if (titleCard) {
         titleCard.classList.add('minimized');
     }
@@ -328,7 +330,7 @@ map.on('click', 'community-districts-fill', (e) => {
     map.setFilter('community-districts-highlight', ['==', ['get', 'boro_cd'], clickedDistrict]);
 
     // Fit map to district bounds
-    const bounds = getGeometryBounds(e.features[0].geometry);
+    const bounds = getGeometryBounds(feature.geometry);
     if (bounds) {
         map.fitBounds(bounds, {
             padding: { top: 40, bottom: 40, left: 40, right: 420 },
@@ -346,7 +348,7 @@ map.on('click', 'community-districts-fill', (e) => {
     // Display centers for this district
     if (map.getLayer('centers-layer')) {
         map.setLayoutProperty('centers-layer', 'visibility', 'visible');
-        map.setFilter('centers-layer', ['within', e.features[0].geometry]);
+        map.setFilter('centers-layer', ['within', feature.geometry]);
     }
     if (map.getLayer('centers-layer-hovered')) {
         map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
@@ -356,9 +358,9 @@ map.on('click', 'community-districts-fill', (e) => {
 
     // Filter sidebar list
     if (centerData) {
-        const districtPolygon = e.features[0].geometry;
-        const filteredCenters = centerData.features.filter(feature => {
-            return pointInPolygon(feature.geometry.coordinates, districtPolygon);
+        const districtPolygon = feature.geometry;
+        const filteredCenters = centerData.features.filter(f => {
+            return pointInPolygon(f.geometry.coordinates, districtPolygon);
         });
 
         const stats = districtStatsMap[clickedDistrict];
@@ -394,12 +396,9 @@ map.on('click', 'community-districts-fill', (e) => {
             `;
         }
 
-        
         let html = `<h2 style="position: sticky; top: 0; text-align: center; background: white; padding: 15px; margin: -20px -15px -15px; border-bottom: 1px solid #ddd; z-index: 10;font-size: 1.2rem;">CFC Centers in<br>Community District ${clickedDistrict}</h2>`;
         html += statsHtml;
 
-        
-        
         if (filteredCenters.length > 0) {
             html += `<p class="instruction-text">Click on a center to learn more</p>`;
             html += `<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px;">`;
@@ -419,18 +418,14 @@ map.on('click', 'community-districts-fill', (e) => {
             // Add hover and click listeners to cards
             document.querySelectorAll('.center-entry').forEach(card => {
                 card.addEventListener('mouseenter', () => {
-                    // Only trigger hover effects if this specific card isn't the one already selected
                     if (selectedCard === card) return;
-
                     const centerName = card.getAttribute('data-center-name');
                     map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], centerName]);
                     map.setLayoutProperty('centers-layer-hovered', 'visibility', 'visible');
                 });
 
                 card.addEventListener('mouseleave', () => {
-                    // Only reset map if this card isn't the one currently selected
                     if (selectedCard === card) return;
-
                     map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
                     map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], '']);
                 });
@@ -440,20 +435,17 @@ map.on('click', 'community-districts-fill', (e) => {
                     const centerFeature = filteredCenters.find(f => f.properties.Center === centerName);
 
                     if (selectedCard === card) {
-                        // DESELECT: User clicked the same card again
                         selectedCard.classList.remove('selected');
                         selectedCard = null;
                         map.setLayoutProperty('centers-layer-hovered', 'visibility', 'none');
                         popup.remove();
                     } else {
-                        // SELECT NEW: Clear old selection class and set new one
                         if (selectedCard) {
                             selectedCard.classList.remove('selected');
                         }
                         selectedCard = card;
                         card.classList.add('selected');
 
-                        // Map highlights and Popup logic
                         map.setFilter('centers-layer-hovered', ['==', ['get', 'Center'], centerName]);
                         map.setLayoutProperty('centers-layer-hovered', 'visibility', 'visible');
 
@@ -461,28 +453,92 @@ map.on('click', 'community-districts-fill', (e) => {
                             const props = centerFeature.properties;
                             popup.setLngLat(centerFeature.geometry.coordinates)
                                 .setHTML(`
-                        <div style="text-align: center; font-family: sans-serif;">
-                            <h3 style="margin: 0 0 4px 0; font-size: 14px;">${props.Center || 'Unknown'}</h3>
-                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Address || ''}</p>
-                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Phone || ''}</p>
-                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Days || ''}</p>
-                            <p style="margin: 0; font-size: 12px; color: #666;">${props.Hours || ''}</p>
-                        </div>
-                    `)
-                                .addTo(map);
+                                <div style="text-align: center; font-family: sans-serif;">
+                                    <h3 style="margin: 0 0 4px 0; font-size: 14px;">${props.Center || 'Unknown'}</h3>
+                                    <p style="margin: 0; font-size: 12px; color: #666;">${props.Address || ''}</p>
+                                    <p style="margin: 0; font-size: 12px; color: #666;">${props.Phone || ''}</p>
+                                    <p style="margin: 0; font-size: 12px; color: #666;">${props.Days || ''}</p>
+                                    <p style="margin: 0; font-size: 12px; color: #666;">${props.Hours || ''}</p>
+                                </div>
+                            `).addTo(map);
                         }
                     }
                 });
             });
-            /* --- TO HERE --- */
-
-
+        } else {
+            sidebarContent.innerHTML = `${html}<p style="margin-top: 15px; text-align: center;">There are no community food centers in this district.</p>`;
         }
     }
-         else {
-    sidebarContent.innerHTML = `${html}<p style="margin-top: 15px;">There are no community food centers in this district.</p>`;
-};
+}
+
+// Map Click triggers activateDistrict
+map.on('click', 'community-districts-fill', (e) => {
+    activateDistrict(e.features[0]);
 });
+
+// --- SEARCH BAR AUTOCOMPLETE LOGIC ---
+const searchInput = document.getElementById('district-search');
+const searchResults = document.getElementById('search-results');
+
+if (searchInput && searchResults) {
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        searchResults.innerHTML = '';
+        
+        if (query.length < 2 || !districtStats) {
+            searchResults.classList.add('hidden');
+            return;
+        }
+
+        // Search against district stats (matches neighborhood name or district ID)
+        const matches = districtStats.filter(stat => {
+            if (!stat.boro_cd || !stat.GeogName) return false;
+            
+            const rawName = stat.GeogName.toLowerCase();
+            const cleanName = getDistrictDisplayName(stat.GeogName).toLowerCase();
+            const boroCd = String(stat.boro_cd);
+            
+            return rawName.includes(query) || cleanName.includes(query) || boroCd.includes(query);
+        });
+
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                const li = document.createElement('li');
+                const cleanName = getDistrictDisplayName(match.GeogName);
+                li.innerHTML = `<strong>${cleanName}</strong> (CD ${match.boro_cd})`;
+                
+                li.addEventListener('click', () => {
+                    // Match found! Look up the corresponding geometry from districtsGeoJSON
+                    if (districtsGeoJSON) {
+                        const feature = districtsGeoJSON.features.find(f => f.properties.boro_cd === match.boro_cd);
+                        if (feature) {
+                            activateDistrict(feature);
+                        }
+                    }
+                    // Reset search bar state
+                    searchInput.value = '';
+                    searchResults.classList.add('hidden');
+                });
+                searchResults.appendChild(li);
+            });
+        } else {
+            const li = document.createElement('li');
+            li.textContent = "No matches found";
+            li.className = "no-matches";
+            searchResults.appendChild(li);
+        }
+        
+        searchResults.classList.remove('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+            searchResults.classList.add('hidden');
+        }
+    });
+}
+
 
 // --- SIDEBAR CLOSE LOGIC ---
 const closeBtn = document.getElementById('close-sidebar');
@@ -596,6 +652,8 @@ Promise.all([
     fetch('CFC_ACTIVE_points.geojson').then(res => res.json()),
     fetch('community_district_stats.csv').then(res => res.text())
 ]).then(([districts, centers, csvData]) => {
+
+    districtsGeoJSON = districts;
 
     // ... (your data processing logic here) ...
 
