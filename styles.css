@@ -540,7 +540,7 @@ html {
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     font-family: 'Helvetica Neue', Arial, sans-serif;
-    text-align: center;
+    text-align: left;
     /* Centers the user's typed text */
 }
 
