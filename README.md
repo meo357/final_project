@@ -16,6 +16,7 @@ An interactive web map showcasing community food centers by NYC community distri
 - **Interactive Popups**: Click a community district to see the selected community district's economic statistics and corresponding community food centers. Hover above each highlighted community food center to see its name and address.
 - **Floating Legend**: Bottom-right legend shows each borough and their corresponding colors
 - **Polished Header**: Eye-catching gradient header with project description and call-to-action
+- **Search Bar**: Search bar in header that allows you to easily look up neighborhood or community district
 - **Sidebar**: Right sidebar lists the selected community district's economic statistics and corresponding community food centers. Click on a food center card to see their respective locations, open days, and hours
 
 ### Files
